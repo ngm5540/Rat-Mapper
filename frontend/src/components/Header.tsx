@@ -6,11 +6,11 @@ export function Header() {
 	return (
 		<header>
 			<nav>
+				<p> Rat mapping! </p>
+			</nav>
+			<nav>
 				<a href="/" class={url == '/' && 'active'}>
 					Home
-				</a>
-				<a href="/404" class={url == '/404' && 'active'}>
-					404
 				</a>
 			</nav>
 		</header>
