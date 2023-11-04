@@ -1,6 +1,7 @@
 import { Component } from 'preact';
 import { Rat } from '../../rat';
 import './style.css';
+import { RatComponent } from '../../components/Rat';
 
 
 export type AnalyzeProps  = {
@@ -20,13 +21,17 @@ export class Analyze extends Component<any, AnalyzeState>  {
 		}
 
 		componentDidMount() {
+			console.log(`Requesting DNA parsing for ${this.props.dna}`);
 			fetch(`http://localhost:8080/parse/${this.props.dna}`)
 				.then((value: Response) => {
+					console.log(`Got response! ${value.status}`);
 					if (value.ok) {
 						value.json().then((data) => {
+							console.log(`Parsed value...`);
+							console.log(data);
 							this.setState({
-								gotRat: true, 
-								responseOK: true, 
+								gotRat: true,
+								responseOK: value.ok,
 								rat: data
 							});
 						});
@@ -41,21 +46,15 @@ export class Analyze extends Component<any, AnalyzeState>  {
 		render() {
 			if (this.state.gotRat) {
 				if (this.state.responseOK) {
-					const rat = this.state.rat!;
 					return (
 						<div class="analyze">
 						<h1>About your rat:</h1>
-						<ul>
-							<li>Fur color: {rat.furColor}</li>
-							<li>Eye color: {rat.eyeColor}</li>
-							<li>Ear size: {rat.earSize}</li>
-							<li>Blood type: {rat.bloodType}</li>
-						</ul>
+							<RatComponent rat={this.state.rat!} />
 						</div>
 					);
 				}  else {
 					return (
-						<h1> Could not get your rat! 🐀😔</h1>
+						<h1> Could not get your rat! 😔 🐀</h1>
 					);
 				}
 			} else {
