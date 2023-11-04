@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const exampleData = "{\"furColor\":\"grey\",\"eyeColor\":\"red\",\"earSize\":\"medium\",\"bloodType\":\"AB\"}"
+
 // idiotically simple http server for testing purposes
 func main() {
 	if len(os.Args) < 2 {
@@ -20,8 +22,6 @@ func main() {
 	if len(os.Args) >= 3 {
 		delay, _ = strconv.Atoi(os.Args[2])
 	}	
-
-	const exampleData = "{\"furColor\":\"grey\",\"eyeColor\":\"red\",\"earSize\":\"medium\",\"bloodType\":\"AB\"}"
 
 	http.HandleFunc("/parse/", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s: %s", r.Method, r.URL.Path)
@@ -36,6 +36,7 @@ func main() {
 
 		// response 🗣️
 		fmt.Fprintf(w, "%s\n", exampleData);
+		// w.WriteHeader(400);
 	})
 
 	log.Printf("Running http server on %s\n", listenAddress)
