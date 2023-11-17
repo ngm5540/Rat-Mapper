@@ -6,7 +6,8 @@ export function Header() {
 	return (
 		<header>
 			<nav>
-				<p> Rat mapping! </p>
+                <img src="/public/spin.gif" alt="Rat spinning horizontally" style="max-width:100px"/>
+				<p> Rat Mapper </p>
 			</nav>
 			<nav>
 				<a href="/" class={url == '/' && 'active'}>
