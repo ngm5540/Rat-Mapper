@@ -1,0 +1,3 @@
+.nav_button {
+    @apply h-12 rounded-md hover:bg-indigo-700;
+}
