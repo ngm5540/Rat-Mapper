@@ -1,0 +1,11 @@
+div.rat_question {
+    @apply flex items-center space-x-4;
+}
+
+select.rat_question {
+    @apply w-20 h-9 p-2;
+}
+
+.codon {
+    @apply uppercase hover:text-red-400;
+}
