@@ -34,11 +34,12 @@ export function Home() {
                         <p class="ml-auto">3'</p>
                     </div>
                     <div class="flex flex-row">
-                        <div class="codon">acg</div>
+                        <div class="codon">aug</div>
                         <div class="codon">tcg</div>
                         <div class="codon">cag</div>
                         <div class="codon">gat</div>
                         <div class="codon">atg</div>
+                        <div class="codon">uag</div>
                     </div>
                 </div>
             </div>
