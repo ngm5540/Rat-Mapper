@@ -14,7 +14,7 @@ export function Header() {
                         style="max-width:100px"
                         class="rounded-full"
                     />
-                    <button class="w-36 nav_button">Rat mapper 🐀</button>
+                    <button class="w-36 nav_button text-lg">Rat Mapper</button>
                 </div>
                 <div class="ml-auto flex flex-row items-center space-x-8">
                     <button class="w-20 nav_button">Home</button>
