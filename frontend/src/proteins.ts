@@ -5,6 +5,13 @@
  * @return rna string
  **/
 
+/** Protein corresponding to the start codon */
+export const START_CODON = ribosome("AUG");
+/** Protein corresponding to the stop codon */
+export const STOP_CODON = ribosome("UAG");
+/** Regular expression of valid nucleotides */
+export const RNA_RE = /^[ACGU]+$/;
+
 /**
  * Return type for {@link validateDNA}.
  **/
@@ -16,15 +23,15 @@ export type DNAValidationResult = {
 };
 
 /**
- * @throws InvalidDNAError
+ * Ensures a string of DNA is valid.
+ *
+ * @param dna strand of dna
+ * @returns @link DNAValidationResult
  **/
 export function validateDNA(dna: string): DNAValidationResult {
-    const START_CODON = ribosome("AUG");
-    const STOP_CODON = ribosome("UAG");
-    const RNA_RE = /^[ACGU]+$/;
-
+    // TODO this doesn't actually check that every start codon has a stop codon;
+    // just that the whole string starts/ends with a start & stop codon
     const rna = rnaPolymerase(dna);
-
     var result = {} as DNAValidationResult;
 
     if (!RNA_RE.test(rna)) {
@@ -43,6 +50,7 @@ export function validateDNA(dna: string): DNAValidationResult {
         result.reason = "rna does not start with the start codon";
         return result;
     }
+
     if (rna.slice(-4, -1) != STOP_CODON) {
         result.isValid = false;
         result.reason = "Strand does not end with a stop codon";
@@ -55,12 +63,15 @@ export function validateDNA(dna: string): DNAValidationResult {
 
 /**
  * Encode a DNA strand into proteins.<br>
- * This function does no validation.  To ensure the dna is a valid snippet
+ * This function does no validation. To ensure the dna is a valid snippet
+ * use @link validateDNA
  *
  * @param dna strand of DNA.
+ * @returns an array of arrays containing protein strands
  **/
-export function encodeDNA(dna: string): string[] {
+export function encodeDNA(dna: string): string[][] {
     var parsed = [];
+    var proteinIndex = -1;
     for (
         var i = { start: 0, end: 3 };
         i.end < dna.length;
@@ -68,20 +79,32 @@ export function encodeDNA(dna: string): string[] {
     ) {
         const codon = dna.slice(i.start, i.end);
         const protein = ribosome(rnaPolymerase(codon));
-        if (protein != null) {
-            parsed.push(codon);
-        } else {
+        if (protein === null) {
             return null;
         }
+        if (protein === START_CODON) {
+            parsed.push([]);
+            proteinIndex++;
+        }
+        parsed[proteinIndex].push(protein);
     }
 
     return parsed;
 }
 
+/**
+ * Convert a strand of DNA into a strand of RNA by replacing thymine with uracil
+ **/
 export function rnaPolymerase(dna: string): string {
     return dna.toUpperCase().replace("T", "U");
 }
 
+/**
+ * Convert a codon into the corresponding protein
+ *
+ * @param codon string of length 3 with valid RNA nucleotides (case insensitive)
+ * @returns a string of the corresponding protein (or null if the string is invalid)
+ **/
 export function ribosome(codon: string): string {
     codon = codon.toUpperCase();
 
