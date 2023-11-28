@@ -1,10 +1,3 @@
-/**
- * Transcribe a DNA string into RNA
- *
- * @param dna string of dna
- * @return rna string
- **/
-
 /** Protein corresponding to the start codon */
 export const START_CODON = ribosome("AUG");
 /** Protein corresponding to the stop codon */
