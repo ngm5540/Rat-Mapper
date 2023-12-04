@@ -5,6 +5,9 @@ export const STOP_CODON = ribosome("UAG");
 /** Regular expression of valid nucleotides */
 export const RNA_RE = /^[ACGU]+$/;
 
+/** Type alias for Genome */
+export type Genome = string[][];
+
 /**
  * Return type for {@link validateDNA}.
  **/
