@@ -15,6 +15,7 @@ import {
 } from "../../rat";
 import "./style.css";
 import { Proteins, START_CODON, dnaToCodons } from "../../proteins";
+import { postRat } from "../../backend";
 
 type HomeProps = {};
 type HomeState = {
@@ -220,8 +221,24 @@ export class Home extends Component<HomeProps, HomeState> {
                 </div>
                 <div class="mt-4 space-x-2">
                     <label for="rat-name">Name your rat:</label>
-                    <input class="border-2 rounded-md border-black dark:border-indigo-600"></input>
-                    <button class="bg-indigo-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8">
+                    <input
+                        class="border-2 rounded-md border-black dark:border-indigo-600"
+                        onInput={(e: any) => {
+                            const s = this.getMutState();
+                            s.rat.name = e.target.value;
+                            this.setState(s);
+                        }}
+                    ></input>
+                    <button
+                        class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
+                        disabled={!this.state.rat.name}
+                        onClick={() => {
+                            postRat(this.state.rat).then((value: Response) => {
+                                console.log(`Got response! ${value.status}`);
+                                location.reload();
+                            });
+                        }}
+                    >
                         Send to shed
                     </button>
                 </div>
