@@ -14,7 +14,7 @@ export function App() {
             <Header />
             <main>
                 <Router>
-                    <Route path="/" component={Home} />
+                    <Home path="/" />
                     <Analyze path="/analyze/:dna" />
                     <Route default component={NotFound} />
                     <Test path="/test" />

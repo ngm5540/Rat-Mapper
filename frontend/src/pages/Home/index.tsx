@@ -1,55 +1,204 @@
+import { Component } from "preact";
+import {
+    EarSize,
+    EyeColor,
+    FurColor,
+    HairType,
+    Rat,
+    RatGenome,
+    RatProteins,
+    Sex,
+    TailLength,
+    ratGenomeToProteins,
+    ratToDNA,
+} from "../../rat";
 import "./style.css";
+import { dnaToCodons } from "../../proteins";
 
-export function Home() {
-    return (
-        <div class="home major_component">
-            <h1 class="text-2xl font-bold">Create your rat</h1>
-            <div class="space-y-4 ml-6">
-                <div class="rat_question">
-                    <label for="hair-color">Hair Color</label>
-                    <select name="hair-color" class="rat_question">
-                        <option value="black">Black</option>
-                        <option value="white">White</option>
-                        <option value="grey">Grey</option>
-                    </select>
-                </div>
-                <div class="rat_question">
-                    <label for="eye-color">Eye Color</label>
-                    <select name="eye-color" class="rat_question">
-                        <option value="red">Red</option>
-                        <option value="black">Black</option>
-                    </select>
-                </div>
-                <div class="rat_question">
-                    <label for="ear-size">Ear Size</label>
-                    <select name="ear-size" class="rat_question">
-                        <option value="small">Small</option>
-                        <option value="medium">Medium</option>
-                        <option value="large">Large</option>
-                    </select>
-                </div>
-                <div class="inline-flex flex-col">
-                    <div class="flex">
-                        <p>5'</p>
-                        <p class="ml-auto">3'</p>
+type HomeProps = {};
+type HomeState = {
+    rat: Rat;
+    ratGenome: RatGenome;
+    ratProteins: RatProteins;
+};
+export class Home extends Component<HomeProps, HomeState> {
+    constructor() {
+        super();
+        this.state = {
+            rat: {} as Rat,
+            ratGenome: { mG: "", pG: "" } as RatGenome,
+            ratProteins: {} as RatProteins,
+        };
+    }
+
+    componentDidMount() {
+        // initialize rat to default state
+        this.updateRat({
+            furColor: FurColor.BLACK,
+            eyeColor: EyeColor.BLACK,
+            hairType: HairType.WIRE,
+            tailLength: TailLength.LONG,
+            earSize: EarSize.LARGE,
+            sex: Sex.MALE,
+        });
+    }
+
+    getMutState(): HomeState {
+        return structuredClone(this.state);
+    }
+
+    getRat() {
+        var state: HomeState = this.getMutState();
+        return state.rat;
+    }
+
+    updateRat(r: Rat) {
+        console.log(`Rat: ${JSON.stringify(r)}`);
+        var s: HomeState = this.getMutState();
+        s.rat = r;
+        s.ratGenome = ratToDNA(r);
+        s.ratProteins = ratGenomeToProteins(s.ratGenome);
+
+        this.setState(s);
+        console.log(`New state:`);
+        console.log(s);
+    }
+
+    render() {
+        return (
+            <div class="home major_component">
+                <h1 class="text-2xl font-bold">Create your rat</h1>
+                <div class="space-y-4 ml-6">
+                    <div class="rat_question">
+                        <label for="fur-color">Fur Color</label>
+                        <select
+                            name="fur-color"
+                            class="rat_question"
+                            onChange={(e: any) => {
+                                var rat = this.getRat();
+                                rat.furColor = e.target.value;
+                                this.updateRat(rat);
+                            }}
+                        >
+                            <option value={FurColor.BLACK}>Black</option>
+                            <option value={FurColor.WHITE}>White</option>
+                            <option value={FurColor.DALMATION}>Grey</option>
+                            <option value={FurColor.ORANGE}>Orange 🐅</option>
+                        </select>
                     </div>
-                    <div class="flex flex-row">
-                        <div class="codon">aug</div>
-                        <div class="codon">tcg</div>
-                        <div class="codon">cag</div>
-                        <div class="codon">gat</div>
-                        <div class="codon">atg</div>
-                        <div class="codon">uag</div>
+                    <div class="rat_question">
+                        <label for="eye-color">Eye Color</label>
+                        <select
+                            name="eye-color"
+                            class="rat_question"
+                            onChange={(e: any) => {
+                                var rat = this.getRat();
+                                rat.eyeColor = e.target.value;
+                                this.updateRat(rat);
+                            }}
+                        >
+                            <option value={EyeColor.BLACK}>Black</option>
+                            <option value={EyeColor.RED}>Red</option>
+                        </select>
                     </div>
+                    <div class="rat_question">
+                        <label for="hair-type">Hair Type</label>
+                        <select
+                            name="hair-type"
+                            class="rat_question"
+                            onChange={(e: any) => {
+                                var rat = this.getRat();
+                                rat.hairType = e.target.value;
+                                this.updateRat(rat);
+                            }}
+                        >
+                            <option value={HairType.WIRE}>Wire</option>
+                            <option value={HairType.SMOOTH}>Smooth</option>
+                        </select>
+                    </div>
+                    <div class="rat_question">
+                        <label for="tail-length">Hair Type</label>
+                        <select
+                            name="tail-length"
+                            class="rat_question"
+                            onChange={(e: any) => {
+                                var rat = this.getRat();
+                                rat.tailLength = e.target.value;
+                                this.updateRat(rat);
+                            }}
+                        >
+                            <option value={TailLength.LONG}>Long</option>
+                            <option value={TailLength.SHORT}>Short</option>
+                        </select>
+                    </div>
+                    <div class="rat_question">
+                        <label for="ear-size">Ear Size</label>
+                        <select
+                            name="ear-size"
+                            class="rat_question"
+                            onChange={(e: any) => {
+                                var rat = this.getRat();
+                                rat.earSize = e.target.value;
+                                this.updateRat(rat);
+                            }}
+                        >
+                            <option value={EarSize.LARGE}>Large</option>
+                            <option value={EarSize.MEDIUM}>Medium</option>
+                            <option value={EarSize.SMALL}>Small</option>
+                        </select>
+                    </div>
+                    <div class="rat_question">
+                        <label for="sex">Sex</label>
+                        <select
+                            name="sex"
+                            class="rat_question"
+                            onChange={(e: any) => {
+                                var rat = this.getRat();
+                                rat.sex = e.target.value;
+                                this.updateRat(rat);
+                            }}
+                        >
+                            <option value={Sex.MALE}>Male</option>
+                            <option value={Sex.FEMALE}>Female</option>
+                        </select>
+                    </div>
+                    <div class="inline-flex flex-col">
+                        <div class="flex flex-col">
+                            <div class="flex">
+                                <p>5'</p>
+                                <p class="ml-auto">3'</p>
+                            </div>
+                            <div class="flex flex-row">
+                                {dnaToCodons(this.state.ratGenome.mG).map(
+                                    (item) => (
+                                        <div class="codon">{item}</div>
+                                    ),
+                                )}
+                            </div>
+                            <label class="text-gray-500 text-sm">
+                                Maternal genome
+                            </label>
+                            <div class="flex flex-row">
+                                {dnaToCodons(this.state.ratGenome.pG).map(
+                                    (item) => (
+                                        <div class="codon">{item}</div>
+                                    ),
+                                )}
+                            </div>
+                            <label class="text-gray-500 text-sm">
+                                Paternal genome
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 space-x-2">
+                    <label for="rat-name">Name your rat:</label>
+                    <input class="border-2 rounded-md border-black dark:border-indigo-600"></input>
+                    <button class="bg-indigo-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8">
+                        Send to shed
+                    </button>
                 </div>
             </div>
-            <div class="mt-4 space-x-2">
-                <label for="rat-name">Name your rat:</label>
-                <input class="border-2 rounded-md border-black dark:border-indigo-600"></input>
-                <button class="bg-indigo-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8">
-                    Send to shed
-                </button>
-            </div>
-        </div>
-    );
+        );
+    }
 }

@@ -26,6 +26,7 @@ export interface Rat {
     hairType: HairType;
     tailLength: TailLength;
     earSize: EarSize;
+    sex: Sex;
 }
 
 /**
@@ -159,6 +160,9 @@ function mendel(rg: RatGenome, dom: string, rec: string, m: MI) {
  **/
 export function ratToDNA(r: Rat): RatGenome {
     var g = {} as RatGenome;
+    g.mG = "";
+    g.pG = "";
+    g.sex = r.sex;
 
     const blackFur = constructProteinDNA(DNAMap.get("His"));
     const whiteFur = constructProteinDNA(DNAMap.get("Thr"));

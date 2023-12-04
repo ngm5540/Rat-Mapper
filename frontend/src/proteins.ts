@@ -118,6 +118,19 @@ export function encodeDNA(dna: string): string[][] {
     return parsed;
 }
 
+export function dnaToCodons(dna: string): string[] {
+    var r = [];
+    for (
+        var i = { start: 0, end: 3 };
+        i.end < dna.length;
+        i.start = i.end, i.end += 3
+    ) {
+        r.push(dna.slice(i.start, i.end));
+    }
+
+    return r;
+}
+
 /**
  * Creates a valid protein by surrounding @param protein with valid start/stop
  * codons
