@@ -1,4 +1,21 @@
-import { Genome, START_CODON, constructProtein } from "./proteins";
+/**
+ * Code responsible for representing rat traits and translating them to DNA/Proteins.
+ * Anything in this file has absolutely crossed the threshold from
+ * "sensible programming" to "spaghetti code" because genetics is
+ * complicated and I'm not a web developer so I don't know how to sensibly
+ * structure typescript code.
+ *
+ * If you're reading this I'm sorry.
+ *
+ * @author Nathan Jankowski (njj3397 {at} rit dot edu)
+ **/
+import {
+    DNAMap,
+    Genome,
+    Proteins,
+    constructProteinDNA,
+    encodeDNA,
+} from "./proteins";
 
 export enum FurColor {
     BLACK,
@@ -71,6 +88,15 @@ export interface RatGenome {
 }
 
 /**
+ * Interface for representing a rat genome as proteins. @see Ratgenome
+ **/
+export interface RatProteins {
+    genome: RatGenome;
+    mG: Proteins;
+    pG: Proteins;
+}
+
+/**
  * the javascript equivilant of flipping a coin to simulate genetic randomness
  *
  * See @link ratToProtein
@@ -100,92 +126,93 @@ function randDom() {
  * @param m mendellian inheritance mode
  **/
 function mendel(rg: RatGenome, dom: string, rec: string, m: MI) {
-    const domProtein = constructProtein([dom]);
-    const recProtein = constructProtein([rec]);
+    const domProtein = constructProteinDNA(dom);
+    const recProtein = constructProteinDNA(rec);
     switch (m) {
         case MI.HOM_DOM:
-            rg.mG.push(domProtein);
-            rg.pG.push(recProtein);
+            rg.mG += domProtein;
+            rg.pG += recProtein;
             break;
         case MI.HET_DOM:
             if (randBool()) {
                 // rg.mG gets dominant
-                rg.mG.push(domProtein);
-                rg.pG.push(recProtein);
+                rg.mG += domProtein;
+                rg.pG += recProtein;
             } else {
-                rg.mG.push(recProtein);
-                rg.pG.push(domProtein);
+                rg.mG += recProtein;
+                rg.pG += domProtein;
             }
             break;
         case MI.REC:
-            rg.mG.push(recProtein);
-            rg.pG.push(recProtein);
+            rg.mG += recProtein;
+            rg.pG += recProtein;
             break;
     }
 }
 
 /**
- * Convert a rat into it's consitituient proteins
+ * Convert a rat into it's consitituient DNA
  *
  * @param rat rat to convert
- *  @returns an array of strings matching proteins
+ * @returns an array of strings matching proteins
  **/
-export function ratToProtein(r: Rat): RatGenome {
+export function ratToDNA(r: Rat): RatGenome {
     var g = {} as RatGenome;
 
-    const blackFur = constructProtein(["His"]);
-    const whiteFur = constructProtein(["Thr"]);
-    const recFur = constructProtein(["Lys"]);
+    const blackFur = constructProteinDNA(DNAMap.get("His"));
+    const whiteFur = constructProteinDNA(DNAMap.get("Thr"));
+    const recFur = constructProteinDNA(DNAMap.get("Lys"));
     switch (r.furColor) {
+        // an example of codominance
         case FurColor.BLACK:
             // BB or Br
             if (randBool()) {
                 // homozygous
-                g.mG.push(blackFur);
-                g.pG.push(blackFur);
+                g.mG += blackFur;
+                g.pG += blackFur;
                 break;
             }
             if (randBool()) {
                 // maternal gets dominant gene
-                g.mG.push(blackFur);
-                g.pG.push(recFur);
+                g.mG += blackFur;
+                g.pG += recFur;
             } else {
-                g.mG.push(recFur);
-                g.pG.push(blackFur);
+                g.mG += recFur;
+                g.pG += blackFur;
             }
             break;
         case FurColor.WHITE:
             // WW or Wr
             if (randBool()) {
                 // homozygous
-                g.mG.push(whiteFur);
-                g.pG.push(whiteFur);
+                g.mG += whiteFur;
+                g.pG += whiteFur;
                 break;
             }
             if (randBool()) {
                 // maternal gets dominant gene
-                g.mG.push(whiteFur);
-                g.pG.push(recFur);
+                g.mG += whiteFur;
+                g.pG += recFur;
             } else {
-                g.mG.push(recFur);
-                g.pG.push(whiteFur);
+                g.mG += recFur;
+                g.pG += whiteFur;
             }
             break;
         case FurColor.DALMATION:
             // BW
             if (randBool()) {
                 // maternal is black
-                g.mG.push(blackFur);
-                g.pG.push(whiteFur);
+                g.mG += blackFur;
+                g.pG += whiteFur;
             } else {
-                g.mG.push(whiteFur);
-                g.pG.push(blackFur);
+                g.mG += whiteFur;
+                g.pG += blackFur;
             }
             break;
         case FurColor.ORANGE:
             // rr
-            g.mG.push(recFur);
-            g.mG.push(recFur);
+            g.mG += recFur;
+            g.mG += recFur;
             break;
     }
 
@@ -198,7 +225,7 @@ export function ratToProtein(r: Rat): RatGenome {
             mEyes = MI.REC;
             break;
     }
-    mendel(g, "Ser", "Leu", mEyes);
+    mendel(g, DNAMap.get("Ser"), DNAMap.get("Leu"), mEyes);
 
     var mHair: MI;
     switch (r.hairType) {
@@ -209,7 +236,7 @@ export function ratToProtein(r: Rat): RatGenome {
             mHair = MI.REC;
             break;
     }
-    mendel(g, "Asp", "Glu", mHair);
+    mendel(g, DNAMap.get("Asp"), DNAMap.get("Glu"), mHair);
 
     var mTail: MI;
     switch (r.tailLength) {
@@ -220,7 +247,7 @@ export function ratToProtein(r: Rat): RatGenome {
             mTail = MI.REC;
             break;
     }
-    mendel(g, "Cys", "Tyr", mTail);
+    mendel(g, DNAMap.get("Cys"), DNAMap.get("Tyr"), mTail);
 
     var mEar: MI;
     switch (r.earSize) {
@@ -234,9 +261,21 @@ export function ratToProtein(r: Rat): RatGenome {
             mEar = MI.HOM_DOM;
             break;
     }
-    // even though this is non-mendellian in practice it still follows the same
-    // algorithm
-    mendel(g, "Phe", "Ile", mEar);
+    // even though incomplete dominance is non-mendellian the genetic distribution
+    // still follows the same algorithm
+    mendel(g, DNAMap.get("Phe"), DNAMap.get("Ile"), mEar);
 
     return g;
+}
+
+/**
+ * Convert an @link RatGenome to @link RatProteins
+ **/
+export function ratGenomeToProteins(rg: RatGenome): RatProteins {
+    var rp = {} as RatProteins;
+    rp.genome = rg;
+    rp.mG = encodeDNA(rg.mG);
+    rp.pG = encodeDNA(rg.pG);
+
+    return rp;
 }

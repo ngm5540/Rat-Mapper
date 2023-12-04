@@ -1,12 +1,42 @@
+/**
+ * General functions for working with proteins and DNA/RNA.
+ * The code here isn't exactly pretty but I did my best.  Genetics
+ * is hard.
+ *
+ * @author Nathan Jankowski (njj3397 <at> rit . edu)
+ **/
+
+/**
+ * Mapping of Protein ->  DNA we're using for this project.
+ * DNA is redundant, but for simplicity it makes sense to decide
+ * which codons correspond to which proteins
+ **/
+export const DNAMap = new Map([
+    ["Start", reverseTranscriptase("AUG")],
+    ["Stop", reverseTranscriptase("UAG")],
+    ["His", reverseTranscriptase("CAU")],
+    ["Thr", reverseTranscriptase("ACC")],
+    ["Lys", reverseTranscriptase("AAG")],
+    ["Ser", reverseTranscriptase("AGU")],
+    ["Leu", reverseTranscriptase("CUA")],
+    ["Asp", reverseTranscriptase("GAC")],
+    ["Glu", reverseTranscriptase("GAA")],
+    ["Cys", reverseTranscriptase("UGU")],
+    ["Tyr", reverseTranscriptase("UAC")],
+    ["Phe", reverseTranscriptase("UUC")],
+    ["Ile", reverseTranscriptase("AUA")],
+]);
+
 /** Protein corresponding to the start codon */
-export const START_CODON = ribosome("AUG");
+export const START_CODON = ribosome(rnaPolymerase(DNAMap.get("Start")));
 /** Protein corresponding to the stop codon */
-export const STOP_CODON = ribosome("UAG");
+export const STOP_CODON = ribosome(rnaPolymerase(DNAMap.get("Stop")));
 /** Regular expression of valid nucleotides */
 export const RNA_RE = /^[ACGU]+$/;
 
 /** Type alias for Genome */
-export type Genome = string[][];
+export type Proteins = string[][];
+export type Genome = string;
 
 /**
  * Return type for {@link validateDNA}.
@@ -101,10 +131,25 @@ export function constructProtein(protein: string[]) {
 }
 
 /**
+ * Creates a DNA strand which codes for a valid protein by surrounding
+ * the @param codons snippet with start/stop proteins
+ **/
+export function constructProteinDNA(codons: string) {
+    return DNAMap.get("Start") + codons + DNAMap.get("Stop");
+}
+
+/**
  * Convert a strand of DNA into a strand of RNA by replacing thymine with uracil
  **/
 export function rnaPolymerase(dna: string): string {
     return dna.toUpperCase().replace("T", "U");
+}
+
+/**
+ * Convert a strand of RNA into a single-stranded DNA segment
+ **/
+export function reverseTranscriptase(rna: string): string {
+    return rna.toUpperCase().replace("U", "T");
 }
 
 /**
