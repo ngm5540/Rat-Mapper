@@ -167,6 +167,7 @@ export function ratToDNA(r: Rat): RatGenome {
     const blackFur = constructProteinDNA(DNAMap.get("His"));
     const whiteFur = constructProteinDNA(DNAMap.get("Thr"));
     const recFur = constructProteinDNA(DNAMap.get("Lys"));
+
     switch (r.furColor) {
         // an example of codominance
         case FurColor.BLACK:
@@ -219,6 +220,9 @@ export function ratToDNA(r: Rat): RatGenome {
             g.mG += recFur;
             g.mG += recFur;
             break;
+        default:
+            console.error("Did not get a fur color!");
+            break;
     }
 
     var mEyes: MI;
@@ -228,6 +232,9 @@ export function ratToDNA(r: Rat): RatGenome {
             break;
         case EyeColor.RED:
             mEyes = MI.REC;
+            break;
+        default:
+            console.error("Did not get an eye color");
             break;
     }
     mendel(g, DNAMap.get("Ser"), DNAMap.get("Leu"), mEyes);
@@ -240,6 +247,9 @@ export function ratToDNA(r: Rat): RatGenome {
         case HairType.SMOOTH:
             mHair = MI.REC;
             break;
+        default:
+            console.error("Did not get a hair type");
+            break;
     }
     mendel(g, DNAMap.get("Asp"), DNAMap.get("Glu"), mHair);
 
@@ -250,6 +260,9 @@ export function ratToDNA(r: Rat): RatGenome {
             break;
         case TailLength.SHORT:
             mTail = MI.REC;
+            break;
+        default:
+            console.error("Did not get a tail length");
             break;
     }
     mendel(g, DNAMap.get("Cys"), DNAMap.get("Tyr"), mTail);
@@ -264,6 +277,9 @@ export function ratToDNA(r: Rat): RatGenome {
             break;
         case EarSize.LARGE:
             mEar = MI.HOM_DOM;
+            break;
+        default:
+            console.error("Did not get an ear size");
             break;
     }
     // even though incomplete dominance is non-mendellian the genetic distribution

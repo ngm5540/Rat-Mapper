@@ -76,7 +76,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.furColor = e.target.value;
+                                rat.furColor = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -93,7 +93,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.eyeColor = e.target.value;
+                                rat.eyeColor = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -108,7 +108,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.hairType = e.target.value;
+                                rat.hairType = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -123,7 +123,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.tailLength = e.target.value;
+                                rat.tailLength = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -138,7 +138,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.earSize = e.target.value;
+                                rat.earSize = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
