@@ -9,11 +9,12 @@ import {
     RatProteins,
     Sex,
     TailLength,
+    indexToTrait,
     ratGenomeToProteins,
     ratToDNA,
 } from "../../rat";
 import "./style.css";
-import { dnaToCodons } from "../../proteins";
+import { Proteins, START_CODON, dnaToCodons } from "../../proteins";
 
 type HomeProps = {};
 type HomeState = {
@@ -62,6 +63,12 @@ export class Home extends Component<HomeProps, HomeState> {
         this.setState(s);
         console.log(`New state:`);
         console.log(s);
+    }
+
+    getProteinTooltip(arr: Proteins, index: number): string {
+        var protein = arr[index];
+        if (protein === START_CODON) protein += " (Start)";
+        return `${indexToTrait(index)} - ${protein}`;
     }
 
     render() {
@@ -170,8 +177,16 @@ export class Home extends Component<HomeProps, HomeState> {
                             </div>
                             <div class="flex flex-row">
                                 {dnaToCodons(this.state.ratGenome.mG).map(
-                                    (item) => (
-                                        <div class="codon">{item}</div>
+                                    (item, index) => (
+                                        <div
+                                            class="codon"
+                                            title={this.getProteinTooltip(
+                                                this.state.ratProteins.pG,
+                                                index,
+                                            )}
+                                        >
+                                            {item}
+                                        </div>
                                     ),
                                 )}
                             </div>
@@ -183,9 +198,10 @@ export class Home extends Component<HomeProps, HomeState> {
                                     (item, index) => (
                                         <div
                                             class="codon"
-                                            title={
-                                                this.state.ratProteins.pG[index]
-                                            }
+                                            title={this.getProteinTooltip(
+                                                this.state.ratProteins.pG,
+                                                index,
+                                            )}
                                         >
                                             {item}
                                         </div>

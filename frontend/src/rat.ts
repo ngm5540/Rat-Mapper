@@ -17,6 +17,24 @@ import {
     encodeDNA,
 } from "./proteins";
 
+export function indexToTrait(i: number): string {
+    if (i >= 0 && i < 3) {
+        return "Fur color";
+    }
+    if (i >= 3 && i < 6) {
+        return "Eye color";
+    }
+    if (i >= 6 && i < 9) {
+        return "Hair type";
+    }
+    if (i >= 9 && i < 12) {
+        return "Tail length";
+    }
+    if (i >= 12 && i < 15) {
+        return "Ear size";
+    }
+    return "";
+}
 /**
  * The characteristics for a rat that we're tracking
  **/
