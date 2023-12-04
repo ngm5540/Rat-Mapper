@@ -12,7 +12,7 @@ def get_rat(rat_id:int):
 
 @app.route('/all')
 def get_all():
-    return jsonify(RatHook.get())
+    return jsonify(RatHook.all())
 
 @app.route('/save')
 def save_rat():
