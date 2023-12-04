@@ -17,6 +17,44 @@ import {
     encodeDNA,
 } from "./proteins";
 
+/**
+ * The characteristics for a rat that we're tracking
+ **/
+export interface Rat {
+    furColor: FurColor;
+    eyeColor: EyeColor;
+    hairType: HairType;
+    tailLength: TailLength;
+    earSize: EarSize;
+}
+
+/**
+ * the requisite information to transfer a rat genome
+ * genomeA and genomeB are identical in structure, but contain different genes,
+ * to represent the fact that rats are diploid creatures.  The format of a
+ * genome is as follows:
+ * [ hair color, eye color, hair type, tail length, ear size]
+ *
+ * Each gene is represented as a full protein with a start and stop codon.
+ *
+ * Sex is not represented in the genome in this model, but it is still tracked.
+ **/
+export interface RatGenome {
+    mG: Genome; // maternal genome
+    pG: Genome; // paternal genome
+    sex: Sex;
+}
+
+/**
+ * Interface for representing a rat genome as proteins. @see Ratgenome
+ **/
+export interface RatProteins {
+    genome: RatGenome;
+    mG: Proteins;
+    pG: Proteins;
+}
+
+// the 37 enums for @link Rat
 export enum FurColor {
     BLACK,
     WHITE,
@@ -57,43 +95,6 @@ enum MI {
     HOM_DOM, // homozygous dominant
     HET_DOM, // heterozygous dominant
     REC, // recessive
-}
-
-/**
- * The characteristics for a rat that we're tracking
- **/
-export interface Rat {
-    furColor: FurColor;
-    eyeColor: EyeColor;
-    hairType: HairType;
-    tailLength: TailLength;
-    earSize: EarSize;
-}
-
-/**
- * the requisite information to transfer a rat genome
- * genomeA and genomeB are identical in structure, but contain different genes,
- * to represent the fact that rats are diploid creatures.  The format of a
- * genome is as follows:
- * [ hair color, eye color, hair type, tail length, ear size]
- *
- * Each gene is represented as a full protein with a start and stop codon.
- *
- * Sex is not represented in the genome in this model, but it is still tracked.
- **/
-export interface RatGenome {
-    mG: Genome; // maternal genome
-    pG: Genome; // paternal genome
-    sex: Sex;
-}
-
-/**
- * Interface for representing a rat genome as proteins. @see Ratgenome
- **/
-export interface RatProteins {
-    genome: RatGenome;
-    mG: Proteins;
-    pG: Proteins;
 }
 
 /**
