@@ -218,7 +218,7 @@ export function ratToDNA(r: Rat): RatGenome {
         case FurColor.ORANGE:
             // rr
             g.mG += recFur;
-            g.mG += recFur;
+            g.pG += recFur;
             break;
         default:
             console.error("Did not get a fur color!");
