@@ -180,8 +180,15 @@ export class Home extends Component<HomeProps, HomeState> {
                             </label>
                             <div class="flex flex-row">
                                 {dnaToCodons(this.state.ratGenome.pG).map(
-                                    (item) => (
-                                        <div class="codon">{item}</div>
+                                    (item, index) => (
+                                        <div
+                                            class="codon"
+                                            title={
+                                                this.state.ratProteins.pG[index]
+                                            }
+                                        >
+                                            {item}
+                                        </div>
                                     ),
                                 )}
                             </div>

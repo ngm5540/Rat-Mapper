@@ -35,7 +35,7 @@ export const STOP_CODON = ribosome(rnaPolymerase(DNAMap.get("Stop")));
 export const RNA_RE = /^[ACGU]+$/;
 
 /** Type alias for Genome */
-export type Proteins = string[][];
+export type Proteins = string[];
 export type Genome = string;
 
 /**
@@ -95,26 +95,16 @@ export function validateDNA(dna: string): DNAValidationResult {
  * @param dna strand of DNA.
  * @returns an array of arrays containing protein strands
  **/
-export function encodeDNA(dna: string): string[][] {
+export function encodeDNA(dna: string): Proteins {
     var parsed = [];
-    var proteinIndex = -1;
-    for (
-        var i = { start: 0, end: 3 };
-        i.end < dna.length;
-        i.start = i.end, i.end += 3
-    ) {
-        const codon = dna.slice(i.start, i.end);
+    const codons = dnaToCodons(dna);
+    for (const codon of codons) {
         const protein = ribosome(rnaPolymerase(codon));
         if (protein === null) {
             return null;
         }
-        if (protein === START_CODON) {
-            parsed.push([]);
-            proteinIndex++;
-        }
-        parsed[proteinIndex].push(protein);
+        parsed.push(protein);
     }
-
     return parsed;
 }
 
@@ -122,7 +112,7 @@ export function dnaToCodons(dna: string): string[] {
     var r = [];
     for (
         var i = { start: 0, end: 3 };
-        i.end < dna.length;
+        i.end <= dna.length;
         i.start = i.end, i.end += 3
     ) {
         r.push(dna.slice(i.start, i.end));
