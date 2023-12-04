@@ -10,6 +10,9 @@ from app.models.brokers import RatHook
 def get_rat(rat_id:int):
     return jsonify(RatHook.get(id=int(rat_id)))
 
+@app.route('/all')
+def get_all():
+    return jsonify(RatHook.get())
 
 @app.route('/save')
 def save_rat():
