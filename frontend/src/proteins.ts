@@ -89,6 +89,18 @@ export function encodeDNA(dna: string): string[][] {
 }
 
 /**
+ * Creates a valid protein by surrounding @param protein with valid start/stop
+ * codons
+ **/
+export function constructProtein(protein: string[]) {
+    var r = [];
+    r.push(START_CODON);
+    r = r.concat(protein);
+    r.push(STOP_CODON);
+    return r;
+}
+
+/**
  * Convert a strand of DNA into a strand of RNA by replacing thymine with uracil
  **/
 export function rnaPolymerase(dna: string): string {

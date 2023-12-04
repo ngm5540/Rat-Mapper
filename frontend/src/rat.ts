@@ -1,4 +1,4 @@
-import { START_CODON } from "./proteins";
+import { Genome, START_CODON, constructProtein } from "./proteins";
 
 export enum FurColor {
     BLACK,
@@ -34,6 +34,15 @@ export enum Sex {
 }
 
 /**
+ * Mendellian inheritance schemes
+ **/
+enum MI {
+    HOM_DOM, // homozygous dominant
+    HET_DOM, // heterozygous dominant
+    REC, // recessive
+}
+
+/**
  * The characteristics for a rat that we're tracking
  **/
 export interface Rat {
@@ -56,8 +65,8 @@ export interface Rat {
  * Sex is not represented in the genome in this model, but it is still tracked.
  **/
 export interface RatGenome {
-    maternalGenome: string[];
-    paternalGenome: string[];
+    mG: Genome; // maternal genome
+    pG: Genome; // paternal genome
     sex: Sex;
 }
 
@@ -82,16 +91,6 @@ function randDom() {
 }
 
 /**
- * Mendellian inheritance schemes
- **/
-enum MI {
-    HOM_DOM, // homozygous dominant
-    HET_DOM, // heterozygous dominant
-    REC, // recessive
-}
-// type alias because I am NOT typing this out
-
-/**
  * A helper function to do mendellian inheritance for me
  *
  * @param mg maternal genome
@@ -100,25 +99,27 @@ enum MI {
  * @param rec recessive protein
  * @param m mendellian inheritance mode
  **/
-function mendel(mg: string[], pg: string[], dom: string, rec: string, m: MI) {
+function mendel(rg: RatGenome, dom: string, rec: string, m: MI) {
+    const domProtein = constructProtein([dom]);
+    const recProtein = constructProtein([rec]);
     switch (m) {
         case MI.HOM_DOM:
-            mg.push(dom);
-            pg.push(dom);
+            rg.mG.push(domProtein);
+            rg.pG.push(recProtein);
             break;
         case MI.HET_DOM:
             if (randBool()) {
-                // mg gets dominant
-                mg.push(dom);
-                pg.push(rec);
+                // rg.mG gets dominant
+                rg.mG.push(domProtein);
+                rg.pG.push(recProtein);
             } else {
-                mg.push(rec);
-                pg.push(dom);
+                rg.mG.push(recProtein);
+                rg.pG.push(domProtein);
             }
             break;
         case MI.REC:
-            mg.push(rec);
-            pg.push(rec);
+            rg.mG.push(recProtein);
+            rg.pG.push(recProtein);
             break;
     }
 }
@@ -131,29 +132,60 @@ function mendel(mg: string[], pg: string[], dom: string, rec: string, m: MI) {
  **/
 export function ratToProtein(r: Rat): RatGenome {
     var g = {} as RatGenome;
+
+    const blackFur = constructProtein(["His"]);
+    const whiteFur = constructProtein(["Thr"]);
+    const recFur = constructProtein(["Lys"]);
     switch (r.furColor) {
         case FurColor.BLACK:
+            // BB or Br
             if (randBool()) {
-                g.maternalGenome.push("His"); // dominant black
-                g.paternalGenome.push("Lys"); // recessive white
+                // homozygous
+                g.mG.push(blackFur);
+                g.pG.push(blackFur);
+                break;
+            }
+            if (randBool()) {
+                // maternal gets dominant gene
+                g.mG.push(blackFur);
+                g.pG.push(recFur);
             } else {
-                g.maternalGenome.push("Lys");
-                g.paternalGenome.push("His");
+                g.mG.push(recFur);
+                g.pG.push(blackFur);
             }
             break;
         case FurColor.WHITE:
+            // WW or Wr
             if (randBool()) {
-                g.maternalGenome.push("Thr"); // dominant
-                g.paternalGenome.push("Asn");
+                // homozygous
+                g.mG.push(whiteFur);
+                g.pG.push(whiteFur);
+                break;
+            }
+            if (randBool()) {
+                // maternal gets dominant gene
+                g.mG.push(whiteFur);
+                g.pG.push(recFur);
             } else {
-                g.maternalGenome.push("Asn");
-                g.paternalGenome.push("Thr");
+                g.mG.push(recFur);
+                g.pG.push(whiteFur);
+            }
+            break;
+        case FurColor.DALMATION:
+            // BW
+            if (randBool()) {
+                // maternal is black
+                g.mG.push(blackFur);
+                g.pG.push(whiteFur);
+            } else {
+                g.mG.push(whiteFur);
+                g.pG.push(blackFur);
             }
             break;
         case FurColor.ORANGE:
-            // picking some recessive genes for this
-            g.maternalGenome.push("Asn");
-            g.paternalGenome.push("Lys");
+            // rr
+            g.mG.push(recFur);
+            g.mG.push(recFur);
             break;
     }
 
@@ -166,7 +198,7 @@ export function ratToProtein(r: Rat): RatGenome {
             mEyes = MI.REC;
             break;
     }
-    mendel(g.maternalGenome, g.paternalGenome, "Ser", "Leu", mEyes);
+    mendel(g, "Ser", "Leu", mEyes);
 
     var mHair: MI;
     switch (r.hairType) {
@@ -177,7 +209,7 @@ export function ratToProtein(r: Rat): RatGenome {
             mHair = MI.REC;
             break;
     }
-    mendel(g.maternalGenome, g.paternalGenome, "Asp", "Glu", mHair);
+    mendel(g, "Asp", "Glu", mHair);
 
     var mTail: MI;
     switch (r.tailLength) {
@@ -188,16 +220,23 @@ export function ratToProtein(r: Rat): RatGenome {
             mTail = MI.REC;
             break;
     }
-    mendel(g.maternalGenome, g.paternalGenome, "Cys", "Tyr", mTail);
+    mendel(g, "Cys", "Tyr", mTail);
 
+    var mEar: MI;
     switch (r.earSize) {
         case EarSize.SMALL:
+            mEar = MI.REC;
             break;
         case EarSize.MEDIUM:
+            mEar = MI.HET_DOM;
             break;
         case EarSize.LARGE:
+            mEar = MI.HOM_DOM;
             break;
     }
+    // even though this is non-mendellian in practice it still follows the same
+    // algorithm
+    mendel(g, "Phe", "Ile", mEar);
 
     return g;
 }
