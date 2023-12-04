@@ -39,12 +39,16 @@ export function indexToTrait(i: number): string {
  * The characteristics for a rat that we're tracking
  **/
 export interface Rat {
-    furColor: FurColor;
-    eyeColor: EyeColor;
-    hairType: HairType;
-    tailLength: TailLength;
-    earSize: EarSize;
-    sex: Sex;
+    id: number;
+    name: string;
+    fur_color: FurColor;
+    eye_color: EyeColor;
+    hair: HairType;
+    ear_size: EarSize;
+    tail_size: TailLength;
+    parent_1_id: number;
+    parent_2_id: number;
+    gender: Sex;
 }
 
 /**
@@ -180,13 +184,13 @@ export function ratToDNA(r: Rat): RatGenome {
     var g = {} as RatGenome;
     g.mG = "";
     g.pG = "";
-    g.sex = r.sex;
+    g.sex = r.gender;
 
     const blackFur = constructProteinDNA(DNAMap.get("His"));
     const whiteFur = constructProteinDNA(DNAMap.get("Thr"));
     const recFur = constructProteinDNA(DNAMap.get("Lys"));
 
-    switch (r.furColor) {
+    switch (r.fur_color) {
         // an example of codominance
         case FurColor.BLACK:
             // BB or Br
@@ -244,7 +248,7 @@ export function ratToDNA(r: Rat): RatGenome {
     }
 
     var mEyes: MI;
-    switch (r.eyeColor) {
+    switch (r.eye_color) {
         case EyeColor.BLACK:
             mEyes = randDom();
             break;
@@ -258,7 +262,7 @@ export function ratToDNA(r: Rat): RatGenome {
     mendel(g, DNAMap.get("Ser"), DNAMap.get("Leu"), mEyes);
 
     var mHair: MI;
-    switch (r.hairType) {
+    switch (r.hair) {
         case HairType.WIRE:
             mHair = randDom();
             break;
@@ -272,7 +276,7 @@ export function ratToDNA(r: Rat): RatGenome {
     mendel(g, DNAMap.get("Asp"), DNAMap.get("Glu"), mHair);
 
     var mTail: MI;
-    switch (r.tailLength) {
+    switch (r.tail_size) {
         case TailLength.LONG:
             mTail = randDom();
             break;
@@ -286,7 +290,7 @@ export function ratToDNA(r: Rat): RatGenome {
     mendel(g, DNAMap.get("Cys"), DNAMap.get("Tyr"), mTail);
 
     var mEar: MI;
-    switch (r.earSize) {
+    switch (r.ear_size) {
         case EarSize.SMALL:
             mEar = MI.REC;
             break;

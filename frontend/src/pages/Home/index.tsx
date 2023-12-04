@@ -35,12 +35,16 @@ export class Home extends Component<HomeProps, HomeState> {
     componentDidMount() {
         // initialize rat to default state
         this.updateRat({
-            furColor: FurColor.BLACK,
-            eyeColor: EyeColor.BLACK,
-            hairType: HairType.WIRE,
-            tailLength: TailLength.LONG,
-            earSize: EarSize.LARGE,
-            sex: Sex.MALE,
+            id: -1,
+            name: "",
+            fur_color: FurColor.BLACK,
+            eye_color: EyeColor.BLACK,
+            hair: HairType.WIRE,
+            tail_size: TailLength.LONG,
+            ear_size: EarSize.LARGE,
+            parent_1_id: -1,
+            parent_2_id: -1,
+            gender: Sex.MALE,
         });
     }
 
@@ -83,7 +87,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.furColor = Number(e.target.value);
+                                rat.fur_color = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -100,7 +104,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.eyeColor = Number(e.target.value);
+                                rat.eye_color = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -115,7 +119,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.hairType = Number(e.target.value);
+                                rat.hair = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -130,7 +134,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.tailLength = Number(e.target.value);
+                                rat.tail_size = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -145,7 +149,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.earSize = Number(e.target.value);
+                                rat.ear_size = Number(e.target.value);
                                 this.updateRat(rat);
                             }}
                         >
@@ -161,7 +165,7 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.sex = e.target.value;
+                                rat.gender = e.target.value;
                                 this.updateRat(rat);
                             }}
                         >
