@@ -6,3 +6,7 @@ session.vim
 # macos
 .DS_Store
 ._.DS_Store
+
+# python
+*.pyc
+venv/
