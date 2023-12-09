@@ -3,7 +3,7 @@ div.rat_question {
 }
 
 select.rat_question {
-    @apply w-20 h-9 p-2;
+    @apply w-28 h-11 p-2 border-black border-2 rounded-md;
 }
 
 .codon {
