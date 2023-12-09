@@ -7,6 +7,7 @@ import { Analyze } from "./pages/Analyze/index.jsx";
 import { NotFound } from "./pages/_404.jsx";
 import { Test } from "./pages/Test/Test.jsx";
 import "./style.css";
+import { About } from "./pages/About.jsx";
 
 export function App() {
     return (
@@ -18,6 +19,7 @@ export function App() {
                     <Analyze path="/analyze/:dna" />
                     <Route default component={NotFound} />
                     <Test path="/test" />
+                    <Route component={About} path="/about" />
                 </Router>
             </main>
         </LocationProvider>

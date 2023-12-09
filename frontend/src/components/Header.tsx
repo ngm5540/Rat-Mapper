@@ -19,10 +19,30 @@ export function Header() {
                     </button>
                 </div>
                 <div class="overflow-auto ml-auto flex flex-row items-center space-x-4">
-                    <button class="md:w-20 nav_button">Home</button>
-                    <button class="md:w-24 nav_button">About</button>
-                    <button class="md:w-20 nav_button">Breed</button>
-                    <button class="md:w-28 nav_button">Family Tree</button>
+                    <button
+                        class="md:w-20 nav_button"
+                        onClick={() => (window.location = "/")}
+                    >
+                        Home
+                    </button>
+                    <button
+                        class="md:w-24 nav_button"
+                        onClick={() => (window.location = "/about")}
+                    >
+                        About
+                    </button>
+                    <button
+                        class="md:w-20 nav_button"
+                        onClick={() => (window.location = "/breed")}
+                    >
+                        Breed
+                    </button>
+                    <button
+                        class="md:w-28 nav_button"
+                        onClick={() => (window.location = "/tree")}
+                    >
+                        Family Tree
+                    </button>
                 </div>
             </div>
         </header>
