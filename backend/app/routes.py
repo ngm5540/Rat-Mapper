@@ -14,7 +14,7 @@ def get_rat(rat_id:int):
 def get_all():
     return jsonify(RatHook.all())
 
-@app.route('/save')
+@app.route('/save', methods=['POST','GET'])
 def save_rat():
     if request.get_json():
         RatHook.insert(**request.get_json())
