@@ -41,11 +41,11 @@ export function indexToTrait(i: number): string {
 export interface Rat {
     id: number;
     name: string;
-    fur_color: FurColor;
-    eye_color: EyeColor;
-    hair: HairType;
-    ear_size: EarSize;
-    tail_size: TailLength;
+    fur_color: string;
+    eye_color: MI;
+    hair: MI;
+    ear_size: MI;
+    tail_size: MI;
     parent_1_id: number;
     parent_2_id: number;
     gender: Sex;
@@ -77,14 +77,6 @@ export interface RatProteins {
     pG: Proteins;
 }
 
-// the 37 enums for @link Rat
-export enum FurColor {
-    BLACK,
-    WHITE,
-    DALMATION,
-    ORANGE,
-}
-
 export enum EyeColor {
     BLACK,
     RED,
@@ -106,6 +98,79 @@ export enum EarSize {
     LARGE,
 }
 
+// the 37 enums for @link Rat
+export enum FurColor {
+    BLACK, // "BB" or "Br"
+    WHITE, // "WW" or "Wr"
+    DALMATION, // "BW"
+    ORANGE, // "rr"
+}
+
+export function furColorToCross(f: FurColor): string {
+    var gen: string;
+    switch (f) {
+        case FurColor.BLACK:
+            if (Math.random() < 0.5) {
+                gen = "BB";
+            } else {
+                if (Math.random() < 0.5) gen = "Br";
+                else gen = "rB";
+            }
+            break;
+        case FurColor.WHITE:
+            if (Math.random() < 0.5) {
+                gen = "WW";
+            } else {
+                if (Math.random() < 0.5) gen = "Wr";
+                else gen = "rW";
+            }
+            break;
+        case FurColor.DALMATION:
+            if (Math.random() < 0.5) gen = "BW";
+            else gen = "WB";
+            break;
+        case FurColor.ORANGE:
+            gen = "rr";
+            break;
+        default:
+            console.error("No such fur color!");
+            break;
+    }
+    return gen;
+}
+
+export function earSizeToCross(e: EarSize): MI {
+    var m: MI;
+    switch (e) {
+        case EarSize.LARGE:
+            m = MI.HOM_DOM;
+            break;
+        case EarSize.MEDIUM:
+            if (Math.random() < 0.5) m = MI.HET_DOM_M;
+            else m = MI.HET_DOM_P;
+            break;
+        case EarSize.SMALL:
+            m = MI.REC;
+            break;
+        default:
+            console.error("no such ear size!");
+            break;
+    }
+    return m;
+}
+
+/**
+ * @param v value of enum
+ * @param dom value of dominant
+ * @param rec value of recessive
+ **/
+export function mendelToCross(v: number, dom: number, rec: number): MI {
+    var m: MI;
+    if (v === dom) m = randDom();
+    else m = MI.REC;
+    return m;
+}
+
 export enum Sex {
     MALE,
     FEMALE,
@@ -114,30 +179,22 @@ export enum Sex {
 /**
  * Mendellian inheritance schemes
  **/
-enum MI {
+export enum MI {
     HOM_DOM, // homozygous dominant
-    HET_DOM, // heterozygous dominant
+    HET_DOM_M, // heterozygous dominant maternal
+    HET_DOM_P, // heterozygous dominant paternal
     REC, // recessive
 }
 
-/**
- * the javascript equivilant of flipping a coin to simulate genetic randomness
- *
- * See @link ratToProtein
- **/
-function randBool() {
-    return Math.random() < 0.5;
-}
-
-/**
- * get a random type of mendellian dominance
- **/
-function randDom() {
-    if (randBool()) {
-        return MI.HET_DOM;
-    } else {
+export function randDom() {
+    const r = Math.random();
+    if (r < 0.333) {
         return MI.HOM_DOM;
     }
+    if (r > 0.333 && r < 0.666) {
+        return MI.HET_DOM_M;
+    }
+    return MI.HET_DOM_P;
 }
 
 /**
@@ -157,19 +214,20 @@ function mendel(rg: RatGenome, dom: string, rec: string, m: MI) {
             rg.mG += domProtein;
             rg.pG += recProtein;
             break;
-        case MI.HET_DOM:
-            if (randBool()) {
-                // rg.mG gets dominant
-                rg.mG += domProtein;
-                rg.pG += recProtein;
-            } else {
-                rg.mG += recProtein;
-                rg.pG += domProtein;
-            }
+        case MI.HET_DOM_M:
+            rg.mG += domProtein;
+            rg.pG += recProtein;
+            break;
+        case MI.HET_DOM_P:
+            rg.mG += recProtein;
+            rg.pG += domProtein;
             break;
         case MI.REC:
             rg.mG += recProtein;
             rg.pG += recProtein;
+            break;
+        default:
+            console.error("Not a valid inheritance method!");
             break;
     }
 }
@@ -189,124 +247,41 @@ export function ratToDNA(r: Rat): RatGenome {
     const blackFur = constructProteinDNA(DNAMap.get("His"));
     const whiteFur = constructProteinDNA(DNAMap.get("Thr"));
     const recFur = constructProteinDNA(DNAMap.get("Lys"));
-
-    switch (r.fur_color) {
-        // an example of codominance
-        case FurColor.BLACK:
-            // BB or Br
-            if (randBool()) {
-                // homozygous
-                g.mG += blackFur;
-                g.pG += blackFur;
-                break;
-            }
-            if (randBool()) {
-                // maternal gets dominant gene
-                g.mG += blackFur;
-                g.pG += recFur;
-            } else {
-                g.mG += recFur;
-                g.pG += blackFur;
-            }
+    switch (r.fur_color[0]) {
+        case "B":
+            g.mG += blackFur;
             break;
-        case FurColor.WHITE:
-            // WW or Wr
-            if (randBool()) {
-                // homozygous
-                g.mG += whiteFur;
-                g.pG += whiteFur;
-                break;
-            }
-            if (randBool()) {
-                // maternal gets dominant gene
-                g.mG += whiteFur;
-                g.pG += recFur;
-            } else {
-                g.mG += recFur;
-                g.pG += whiteFur;
-            }
+        case "W":
+            g.mG += whiteFur;
             break;
-        case FurColor.DALMATION:
-            // BW
-            if (randBool()) {
-                // maternal is black
-                g.mG += blackFur;
-                g.pG += whiteFur;
-            } else {
-                g.mG += whiteFur;
-                g.pG += blackFur;
-            }
-            break;
-        case FurColor.ORANGE:
-            // rr
+        case "r":
             g.mG += recFur;
+            break;
+        default:
+            console.error(`no such genotype ${r.fur_color}`);
+            break;
+    }
+    switch (r.fur_color[1]) {
+        case "B":
+            g.pG += blackFur;
+            break;
+        case "W":
+            g.pG += whiteFur;
+            break;
+        case "r":
             g.pG += recFur;
             break;
         default:
-            console.error("Did not get a fur color!");
+            console.error(`no such genotype ${r.fur_color}`);
             break;
     }
 
-    var mEyes: MI;
-    switch (r.eye_color) {
-        case EyeColor.BLACK:
-            mEyes = randDom();
-            break;
-        case EyeColor.RED:
-            mEyes = MI.REC;
-            break;
-        default:
-            console.error("Did not get an eye color");
-            break;
-    }
-    mendel(g, DNAMap.get("Ser"), DNAMap.get("Leu"), mEyes);
-
-    var mHair: MI;
-    switch (r.hair) {
-        case HairType.WIRE:
-            mHair = randDom();
-            break;
-        case HairType.SMOOTH:
-            mHair = MI.REC;
-            break;
-        default:
-            console.error("Did not get a hair type");
-            break;
-    }
-    mendel(g, DNAMap.get("Asp"), DNAMap.get("Glu"), mHair);
-
-    var mTail: MI;
-    switch (r.tail_size) {
-        case TailLength.LONG:
-            mTail = randDom();
-            break;
-        case TailLength.SHORT:
-            mTail = MI.REC;
-            break;
-        default:
-            console.error("Did not get a tail length");
-            break;
-    }
-    mendel(g, DNAMap.get("Cys"), DNAMap.get("Tyr"), mTail);
-
-    var mEar: MI;
-    switch (r.ear_size) {
-        case EarSize.SMALL:
-            mEar = MI.REC;
-            break;
-        case EarSize.MEDIUM:
-            mEar = MI.HET_DOM;
-            break;
-        case EarSize.LARGE:
-            mEar = MI.HOM_DOM;
-            break;
-        default:
-            console.error("Did not get an ear size");
-            break;
-    }
+    mendel(g, DNAMap.get("Ser"), DNAMap.get("Leu"), r.eye_color);
+    mendel(g, DNAMap.get("Asp"), DNAMap.get("Glu"), r.hair);
+    mendel(g, DNAMap.get("Cys"), DNAMap.get("Tyr"), r.tail_size);
     // even though incomplete dominance is non-mendellian the genetic distribution
     // still follows the same algorithm
-    mendel(g, DNAMap.get("Phe"), DNAMap.get("Ile"), mEar);
+    mendel(g, DNAMap.get("Phe"), DNAMap.get("Ile"), r.ear_size);
 
     return g;
 }

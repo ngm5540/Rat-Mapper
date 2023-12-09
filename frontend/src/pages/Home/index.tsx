@@ -4,12 +4,17 @@ import {
     EyeColor,
     FurColor,
     HairType,
+    MI,
     Rat,
     RatGenome,
     RatProteins,
     Sex,
     TailLength,
+    earSizeToCross,
+    furColorToCross,
     indexToTrait,
+    mendelToCross,
+    randDom,
     ratGenomeToProteins,
     ratToDNA,
 } from "../../rat";
@@ -38,11 +43,19 @@ export class Home extends Component<HomeProps, HomeState> {
         this.updateRat({
             id: -1,
             name: "",
-            fur_color: FurColor.BLACK,
-            eye_color: EyeColor.BLACK,
-            hair: HairType.WIRE,
-            tail_size: TailLength.LONG,
-            ear_size: EarSize.LARGE,
+            fur_color: furColorToCross(FurColor.BLACK),
+            eye_color: mendelToCross(
+                EyeColor.BLACK,
+                EyeColor.BLACK,
+                EyeColor.RED,
+            ),
+            hair: mendelToCross(HairType.WIRE, HairType.WIRE, HairType.SMOOTH),
+            tail_size: mendelToCross(
+                TailLength.LONG,
+                TailLength.LONG,
+                TailLength.SHORT,
+            ),
+            ear_size: earSizeToCross(EarSize.LARGE),
             parent_1_id: -1,
             parent_2_id: -1,
             gender: Sex.MALE,
@@ -88,13 +101,16 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.fur_color = Number(e.target.value);
+                                const f = Number(e.target.value);
+                                rat.fur_color = furColorToCross(f);
                                 this.updateRat(rat);
                             }}
                         >
                             <option value={FurColor.BLACK}>Black</option>
                             <option value={FurColor.WHITE}>White</option>
-                            <option value={FurColor.DALMATION}>Grey</option>
+                            <option value={FurColor.DALMATION}>
+                                Dalmation
+                            </option>
                             <option value={FurColor.ORANGE}>Orange 🐅</option>
                         </select>
                     </div>
@@ -105,7 +121,12 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.eye_color = Number(e.target.value);
+                                const v = Number(e.target.value);
+                                rat.eye_color = mendelToCross(
+                                    v,
+                                    EyeColor.BLACK,
+                                    EyeColor.RED,
+                                );
                                 this.updateRat(rat);
                             }}
                         >
@@ -120,7 +141,13 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.hair = Number(e.target.value);
+                                const v = Number(e.target.value);
+                                var m: MI;
+                                rat.eye_color = mendelToCross(
+                                    v,
+                                    HairType.WIRE,
+                                    HairType.SMOOTH,
+                                );
                                 this.updateRat(rat);
                             }}
                         >
@@ -135,7 +162,12 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.tail_size = Number(e.target.value);
+                                const v = Number(e.target.value);
+                                rat.eye_color = mendelToCross(
+                                    v,
+                                    TailLength.LONG,
+                                    TailLength.SHORT,
+                                );
                                 this.updateRat(rat);
                             }}
                         >
@@ -150,7 +182,8 @@ export class Home extends Component<HomeProps, HomeState> {
                             class="rat_question"
                             onChange={(e: any) => {
                                 var rat = this.getRat();
-                                rat.ear_size = Number(e.target.value);
+                                const v = Number(e.target.value);
+                                rat.ear_size = earSizeToCross(v);
                                 this.updateRat(rat);
                             }}
                         >
@@ -186,7 +219,7 @@ export class Home extends Component<HomeProps, HomeState> {
                                         <div
                                             class="codon"
                                             title={this.getProteinTooltip(
-                                                this.state.ratProteins.pG,
+                                                this.state.ratProteins.mG,
                                                 index,
                                             )}
                                         >
