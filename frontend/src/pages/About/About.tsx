@@ -1,5 +1,5 @@
-import { DNAMap, START_CODON, STOP_CODON } from "../proteins";
-import "../style.css";
+import { DNAMap, START_CODON } from "../../proteins";
+import "../../style.css";
 
 function mendelTrait(
     name: string,

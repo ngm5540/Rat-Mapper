@@ -76,7 +76,17 @@ export class Home extends Component<HomeProps, HomeState> {
         var s: HomeState = this.getMutState();
         s.rat = r;
         s.ratGenome = ratToDNA(r);
+        if (this.state.ratGenome === s.ratGenome) {
+            console.error(
+                "Past and current genomes match despite phenotypic change!",
+            );
+        }
         s.ratProteins = ratGenomeToProteins(s.ratGenome);
+        if (this.state.ratProteins === s.ratProteins) {
+            console.error(
+                "Past and current genomes match despite phenotypic change!",
+            );
+        }
 
         this.setState(s);
         console.log(`New state:`);
