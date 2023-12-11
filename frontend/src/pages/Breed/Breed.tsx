@@ -1,12 +1,20 @@
 import { useEffect, useState } from "preact/hooks";
 
-import { Rat } from "../../rat";
+import { Rat, Sex } from "../../rat";
 import { getAllRats } from "../../backend";
+import "../../style.css";
+import { RatComponent } from "../../components/Rat";
+
+function Parent(r: Rat | null, d: string) {
+    if (!r) return <p>{d}</p>
+    return <RatComponent rat={r}/>
+}
 
 export function Breed() {
-    const [rats, setRats] = useState();
-    const [newRat, setNewRat] = useState();
-
+    const [rats, setRats] = useState<Rat[] | null >();
+    const [mother, setMother] = useState<Rat | null>(null);
+    const [father, setFather] = useState<Rat | null>(null);
+    const [child, setChild] = useState<Rat | null>(null);
     // make ajax call to get new rats
     useEffect(() => {
         getAllRats()
@@ -24,8 +32,31 @@ export function Breed() {
     }, []);
 
     return (
-        <div>
-            <h1>rat</h1>
+        <div class="major_component">
+            <h1 class="font-bold text-2xl">Breed</h1>
+            <h2 class="text-xl">Male</h2>
+            <select onChange={(e: any) => setFather(rats[e.target.value])}>
+            <option value={null}></option>
+            {
+                rats?.map((r: Rat, i: number) => {
+                    if (r.gender != Sex.MALE) return;
+                    return <option value={i}>{r.name}</option>;
+                })
+            }
+            </select>
+            <h2 class="text-xl">Female</h2>
+            <select onChange={(e: any) => setMother(rats[e.target.value])}>
+            <option value={null} ></option>
+            {
+                rats?.map((r: Rat, i: number) => {
+                    if (r.gender != Sex.FEMALE) return;
+                    return <option value={i}>{r.name}</option>;
+                })
+            }
+            </select>
+
+            <p>Mother: {Parent(mother, "...")} </p>
+            <p>Father: {Parent(father, "...")} </p>
         </div>
     );
 }
