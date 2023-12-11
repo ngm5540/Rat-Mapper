@@ -210,7 +210,7 @@ export default function Home() {
                 <div class="rat_question">
                     <label for="fur-color">Fur Color</label>
                     <select
-                        name="fur-color"
+                        id="fur-color"
                         class="rat_question"
                         onChange={(e: any) => handleChangeFur(parseEv(e))}
                     >
@@ -223,7 +223,7 @@ export default function Home() {
                 <div class="rat_question">
                     <label for="eye-color">Eye Color</label>
                     <select
-                        name="eye-color"
+                        id="eye-color"
                         class="rat_question"
                         onChange={(e: any) => handleChangeEye(parseEv(e))}
                     >
@@ -234,7 +234,7 @@ export default function Home() {
                 <div class="rat_question">
                     <label for="hair-type">Hair Type</label>
                     <select
-                        name="hair-type"
+                        id="hair-type"
                         class="rat_question"
                         onChange={(e: any) => handleChangeHair(parseEv(e))}
                     >
@@ -245,7 +245,7 @@ export default function Home() {
                 <div class="rat_question">
                     <label for="tail-length">Tail Length</label>
                     <select
-                        name="tail-length"
+                        id="tail-length"
                         class="rat_question"
                         onChange={(e: any) => handleChangeTail(parseEv(e))}
                     >
@@ -256,7 +256,7 @@ export default function Home() {
                 <div class="rat_question">
                     <label for="ear-size">Ear Size</label>
                     <select
-                        name="ear-size"
+                        id="ear-size"
                         class="rat_question"
                         onChange={(e: any) => handleChangeEar(parseEv(e))}
                     >
@@ -268,7 +268,7 @@ export default function Home() {
                 <div class="rat_question">
                     <label for="sex">Sex</label>
                     <select
-                        name="sex"
+                        id="sex"
                         class="rat_question"
                         onChange={(e: any) => handleChangeSex(parseEv(e))}
                     >
@@ -281,6 +281,7 @@ export default function Home() {
             <div class="mt-4 space-x-2">
                 <label for="rat-name">Name your rat:</label>
                 <input
+                    id="rat-name"
                     class="border-2 rounded-md border-black dark:border-indigo-600"
                     onInput={(e: any) => handleChangeName(e.target.value)}
                 ></input>

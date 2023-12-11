@@ -102,11 +102,11 @@ export function DNAVisualization(p: DNAVisualizationProps) {
                 <div class="flex flex-row">
                     {dna(ratGenome.mG, ratProteins.mG)}
                 </div>
-                <label class="text-gray-500 text-sm">Maternal genome</label>
+                <p class="text-gray-500 text-sm">Maternal genome</p>
                 <div class="flex flex-row">
                     {dna(ratGenome.pG, ratProteins.pG)}
                 </div>
-                <label class="text-gray-500 text-sm">Paternal genome</label>
+                <p class="text-gray-500 text-sm">Paternal genome</p>
             </div>
         </div>
     );
