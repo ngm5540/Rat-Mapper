@@ -113,8 +113,21 @@ export function randDom() {
 export function mendelToCross(v: number, dom: number, rec: number): MI {
     var m: MI;
     if (v === dom) m = randDom();
-    else m = MI.REC;
+    else if (v === rec) m = MI.REC;
+    else console.error(`trait ${v} is neither dominant or recessive`);
     return m;
+}
+
+export function eyeColorToCross(e: EyeColor): MI {
+    return mendelToCross(e, EyeColor.BLACK, EyeColor.RED);
+}
+
+export function hairTypeToCross(h: HairType) {
+    return mendelToCross(h, HairType.WIRE, HairType.SMOOTH);
+}
+
+export function tailLengthToCross(t: TailLength) {
+    return mendelToCross(t, TailLength.LONG, TailLength.SHORT);
 }
 
 export default function Home() {
@@ -122,13 +135,9 @@ export default function Home() {
         id: -1,
         name: "",
         fur_color: furColorToCross(FurColor.BLACK),
-        eye_color: mendelToCross(EyeColor.BLACK, EyeColor.BLACK, EyeColor.RED),
-        hair: mendelToCross(HairType.WIRE, HairType.WIRE, HairType.SMOOTH),
-        tail_size: mendelToCross(
-            TailLength.LONG,
-            TailLength.LONG,
-            TailLength.SHORT,
-        ),
+        eye_color: eyeColorToCross(EyeColor.BLACK),
+        hair: hairTypeToCross(HairType.WIRE),
+        tail_size: tailLengthToCross(TailLength.LONG),
         ear_size: earSizeToCross(EarSize.LARGE),
         parent_1_id: -1,
         parent_2_id: -1,
@@ -156,21 +165,21 @@ export default function Home() {
     function handleChangeEye(e: EyeColor) {
         setRat({
             ...rat,
-            eye_color: mendelToCross(e, EyeColor.BLACK, EyeColor.RED),
+            eye_color: eyeColorToCross(e),
         });
     }
 
     function handleChangeHair(h: HairType) {
         setRat({
             ...rat,
-            eye_color: mendelToCross(h, HairType.WIRE, HairType.SMOOTH),
+            hair: hairTypeToCross(h),
         });
     }
 
     function handleChangeTail(t: TailLength) {
         setRat({
             ...rat,
-            eye_color: mendelToCross(t, TailLength.LONG, TailLength.SHORT),
+            tail_size: tailLengthToCross(t),
         });
     }
 
@@ -250,7 +259,7 @@ export default function Home() {
                     </select>
                 </div>
                 <div class="rat_question">
-                    <label for="tail-length">Hair Type</label>
+                    <label for="tail-length">Tail Length</label>
                     <select
                         name="tail-length"
                         class="rat_question"
