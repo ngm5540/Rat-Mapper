@@ -5,8 +5,8 @@ import { Analyze } from "./pages/Analyze/Analyze";
 import { NotFound } from "./pages/_404";
 import { Test } from "./pages/Test/Test";
 import { About } from "./pages/About/About";
-import { Breed } from "./pages/Breed/Breed";
 import Home from "./pages/Home/Home";
+import { Breed } from "./pages/Breed/Breed";
 
 export function App() {
     return (
@@ -16,7 +16,7 @@ export function App() {
                 <Router>
                     <Route component={Home} path="/" />
                     <Analyze path="/analyze/:dna" />
-                    <Breed path="/breed" />
+                    <Route component={Breed} path="/breed" />
                     <Route default component={NotFound} />
                     <Test path="/test" />
                     <Route component={About} path="/about" />

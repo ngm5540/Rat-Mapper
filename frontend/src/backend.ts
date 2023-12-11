@@ -6,6 +6,8 @@ const HEADERS = {
 };
 
 export function postRat(rat: Rat): Promise<Response> {
+    console.log('posting this rat');
+    console.log(rat);
     return fetch(`${BACKEND_URL}/save`, {
         method: "POST",
         body: JSON.stringify(rat),
@@ -16,6 +18,5 @@ export function postRat(rat: Rat): Promise<Response> {
 export async function getAllRats(): Promise<Response> {
     return fetch(`${BACKEND_URL}/all`, {
         method: "GET",
-        headers: HEADERS,
     });
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "preact/hooks";
 import {
     DNAIndexToTrait,
     MI,
+    Rat,
     RatGenome,
     RatProteins,
     Sex,
@@ -131,20 +132,25 @@ export function tailLengthToCross(t: TailLength) {
 }
 
 export default function Home() {
-    const [rat, setRat] = useState({
-        id: -1,
+    const [rat, setRat] = useState<Rat>({
+        id: null,
         name: "",
         fur_color: furColorToCross(FurColor.BLACK),
         eye_color: eyeColorToCross(EyeColor.BLACK),
         hair: hairTypeToCross(HairType.WIRE),
         tail_size: tailLengthToCross(TailLength.LONG),
         ear_size: earSizeToCross(EarSize.LARGE),
-        parent_1_id: -1,
-        parent_2_id: -1,
+        parent_1_id: null,
+        parent_2_id: null,
         gender: Sex.MALE,
     });
-    const [ratGenome, setRatGenome] = useState({ mG: "", pG: "" } as RatGenome);
-    const [ratProteins, setRatProteins] = useState({} as RatProteins);
+    const [ratGenome, setRatGenome] = useState<RatGenome>({
+        mG: "",
+        pG: "",
+    } as RatGenome);
+    const [ratProteins, setRatProteins] = useState<RatProteins>(
+        {} as RatProteins,
+    );
 
     useEffect(ratDidChange, [rat]);
 
@@ -343,9 +349,9 @@ export default function Home() {
                     class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
                     disabled={!rat.name}
                     onClick={() => {
-                        postRat(this.state.rat).then((value: Response) => {
+                        postRat(rat).then((value: Response) => {
                             console.log(`Got response! ${value.status}`);
-                            location.reload();
+                            // location.reload();
                         });
                     }}
                 >

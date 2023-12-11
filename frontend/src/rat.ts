@@ -36,15 +36,15 @@ export enum MI {
  * The characteristics for a rat that we're tracking
  **/
 export interface Rat {
-    id: number;
+    id: number | null;
     name: string;
     fur_color: string;
     eye_color: MI;
     hair: MI;
     ear_size: MI;
     tail_size: MI;
-    parent_1_id: number;
-    parent_2_id: number;
+    parent_1_id: number | null;
+    parent_2_id: number | null;
     gender: Sex;
 }
 
