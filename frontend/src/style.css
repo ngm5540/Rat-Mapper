@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.major_component {
+    @apply mx-5 md:mx-40 my-4;
+}
