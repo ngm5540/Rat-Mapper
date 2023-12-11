@@ -106,8 +106,10 @@ export function Breed() {
                     <p>{displayRat(mother, "...")} </p>
                 </div>
                 <div class="col-span-2">
-                    <label class="text-lg">Child </label>
+                    <h2 class="text-xl">Child </h2>
                     <input
+                        id="child-name-input"
+                        placeholder="Name"
                         class="border-black border-2 rounded-md"
                         onInput={(e: any) => handleName(e.target.value)}
                         hidden={!child}
