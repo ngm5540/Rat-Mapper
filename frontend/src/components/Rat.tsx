@@ -19,6 +19,7 @@ import { useEffect, useState } from "preact/hooks";
 
 export type RatComponentProps = {
     rat: Rat;
+    ignoreName?: boolean;
 };
 /**
  * Display your rat as a table
@@ -28,7 +29,7 @@ export type RatComponentProps = {
 export function RatComponent(p: RatComponentProps) {
     return (
         <ul>
-            <li>Name: {p.rat.name}</li>
+            {p.ignoreName ? "" : <li>Name: {p.rat.name}</li>}
             <li>
                 Fur color: {furColorToString(p.rat.fur_color)} -{" "}
                 {p.rat.fur_color}

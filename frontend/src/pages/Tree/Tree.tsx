@@ -43,7 +43,7 @@ export default function Tree() {
 
     return (
         <div class="major_component">
-            <h1 class="text-2xl font-bold">Rats in the shed</h1>
+            <h1 class="text-2xl font-bold">Rats</h1>
             <ul>
                 {rats.map((r: Rat) => {
                     return (
@@ -80,7 +80,7 @@ export default function Tree() {
                                     </li>
                                 </ul>
                                 <h3 class="font-bold">Traits</h3>
-                                <RatComponent rat={r} />
+                                <RatComponent rat={r} ignoreName={true} />
                                 <h3 class="font-bold">Genome</h3>
                                 <DNAVisualization rat={r} />
                             </details>
