@@ -2,8 +2,6 @@ import { useLocation } from "preact-iso";
 import "./Header.css";
 
 export function Header() {
-    const { url } = useLocation();
-
     return (
         <header>
             <div class="flex items-center sm:px-2 md:p-4 bg-indigo-500 text-white">
@@ -18,31 +16,11 @@ export function Header() {
                         Rat Mapper
                     </button>
                 </div>
-                <div class="overflow-auto ml-auto flex flex-row items-center space-x-4">
-                    <button
-                        class="md:w-20 nav_button"
-                        onClick={() => (window.location = "/")}
-                    >
-                        Home
-                    </button>
-                    <button
-                        class="md:w-24 nav_button"
-                        onClick={() => (window.location = "/about")}
-                    >
-                        About
-                    </button>
-                    <button
-                        class="md:w-20 nav_button"
-                        onClick={() => (window.location = "/breed")}
-                    >
-                        Breed
-                    </button>
-                    <button
-                        class="md:w-28 nav_button"
-                        onClick={() => (window.location = "/tree")}
-                    >
-                        Family Tree
-                    </button>
+                <div class="overflow-auto ml-auto flex flex-row items-center space-x-4 w-1/3 justify-evenly">
+                    <a href="/">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/breed">Breed</a>
+                    <a href="/tree">All rats</a>
                 </div>
             </div>
         </header>
