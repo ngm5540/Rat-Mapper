@@ -1,12 +1,12 @@
 import { render } from "preact";
 import { LocationProvider, Router, Route } from "preact-iso";
 import { Header } from "./components/Header";
-import { Home } from "./pages/Home/Home";
 import { Analyze } from "./pages/Analyze/Analyze";
 import { NotFound } from "./pages/_404";
 import { Test } from "./pages/Test/Test";
 import { About } from "./pages/About/About";
 import { Breed } from "./pages/Breed/Breed";
+import Home from "./pages/Home/Home";
 
 export function App() {
     return (
@@ -14,7 +14,7 @@ export function App() {
             <Header />
             <main>
                 <Router>
-                    <Home path="/" />
+                    <Route component={Home} path="/" />
                     <Analyze path="/analyze/:dna" />
                     <Breed path="/breed" />
                     <Route default component={NotFound} />
