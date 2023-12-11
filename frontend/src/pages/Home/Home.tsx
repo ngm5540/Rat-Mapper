@@ -145,15 +145,6 @@ export default function Home() {
         parent_2_id: null,
         gender: Sex.MALE,
     });
-    const [ratGenome, setRatGenome] = useState<RatGenome>({
-        mG: "",
-        pG: "",
-    } as RatGenome);
-    const [ratProteins, setRatProteins] = useState<RatProteins>(
-        {} as RatProteins,
-    );
-
-    useEffect(ratDidChange, [rat]);
 
     /**
      * parse an event and return the value as a number
@@ -210,14 +201,6 @@ export default function Home() {
             ...rat,
             name: n,
         });
-    }
-
-    function ratDidChange() {
-        console.log(`Rat: ${JSON.stringify(rat)}`);
-        const dna = ratToDNA(rat);
-        const proteins = ratGenomeToProteins(dna);
-        setRatGenome(dna);
-        setRatProteins(proteins);
     }
 
     return (
@@ -294,7 +277,7 @@ export default function Home() {
                     </select>
                 </div>
             </div>
-            <DNAVisualization genome={ratGenome} proteins={ratProteins} />
+            <DNAVisualization rat={rat} />
             <div class="mt-4 space-x-2">
                 <label for="rat-name">Name your rat:</label>
                 <input

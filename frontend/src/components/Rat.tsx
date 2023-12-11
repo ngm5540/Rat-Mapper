@@ -8,10 +8,13 @@ import {
     furColorToString,
     hairTypeToString,
     mendelToString,
+    ratGenomeToProteins,
+    ratToDNA,
     tailLengthToString,
 } from "../rat";
 
 import { Proteins, START_CODON, dnaToCodons } from "../proteins";
+import { useEffect, useState } from "preact/hooks";
 
 export type RatComponentProps = {
     rat: Rat;
@@ -50,11 +53,28 @@ export function RatComponent(p: RatComponentProps) {
 }
 
 export type DNAVisualizationProps = {
-    genome: RatGenome;
-    proteins: RatProteins;
+    rat: Rat;
 };
 
 export function DNAVisualization(p: DNAVisualizationProps) {
+    const [ratGenome, setRatGenome] = useState<RatGenome>({
+        mG: "",
+        pG: "",
+        sex: p.rat.gender,
+    });
+    const [ratProteins, setRatProteins] = useState<RatProteins>({
+        genome: ratGenome,
+        mG: [],
+        pG: [],
+    });
+
+    useEffect(() => {
+        const dna = ratToDNA(p.rat);
+        const proteins = ratGenomeToProteins(dna);
+        setRatGenome(dna);
+        setRatProteins(proteins);
+    }, [p.rat]);
+
     function getProteinTooltip(arr: Proteins, index: number): string {
         var protein = arr[index];
         if (protein === START_CODON) protein += " (Start)";
@@ -77,11 +97,11 @@ export function DNAVisualization(p: DNAVisualizationProps) {
                     <p class="ml-auto">3'</p>
                 </div>
                 <div class="flex flex-row">
-                    {dna(p.genome.mG, p.proteins.mG)}
+                    {dna(ratGenome.mG, ratProteins.mG)}
                 </div>
                 <label class="text-gray-500 text-sm">Maternal genome</label>
                 <div class="flex flex-row">
-                    {dna(p.genome.pG, p.proteins.pG)}
+                    {dna(ratGenome.pG, ratProteins.pG)}
                 </div>
                 <label class="text-gray-500 text-sm">Paternal genome</label>
             </div>
