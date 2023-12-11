@@ -12,6 +12,7 @@ import {
 import "./style.css";
 import { Proteins, START_CODON, dnaToCodons } from "../../proteins";
 import { postRat } from "../../backend";
+import { DNAVisualization } from "../../components/Rat";
 
 export enum EyeColor {
     BLACK,
@@ -219,12 +220,6 @@ export default function Home() {
         setRatProteins(proteins);
     }
 
-    function getProteinTooltip(arr: Proteins, index: number): string {
-        var protein = arr[index];
-        if (protein === START_CODON) protein += " (Start)";
-        return `${DNAIndexToTrait(index)} - ${protein}`;
-    }
-
     return (
         <div class="home major_component">
             <h1 class="text-2xl font-bold">Create your rat</h1>
@@ -298,47 +293,8 @@ export default function Home() {
                         <option value={Sex.FEMALE}>Female</option>
                     </select>
                 </div>
-                <div class="inline-flex flex-col">
-                    <div class="flex flex-col">
-                        <div class="flex">
-                            <p>5'</p>
-                            <p class="ml-auto">3'</p>
-                        </div>
-                        <div class="flex flex-row">
-                            {dnaToCodons(ratGenome.mG).map((item, index) => (
-                                <div
-                                    class="codon"
-                                    title={getProteinTooltip(
-                                        ratProteins.mG,
-                                        index,
-                                    )}
-                                >
-                                    {item}
-                                </div>
-                            ))}
-                        </div>
-                        <label class="text-gray-500 text-sm">
-                            Maternal genome
-                        </label>
-                        <div class="flex flex-row">
-                            {dnaToCodons(ratGenome.pG).map((item, index) => (
-                                <div
-                                    class="codon"
-                                    title={getProteinTooltip(
-                                        ratProteins.pG,
-                                        index,
-                                    )}
-                                >
-                                    {item}
-                                </div>
-                            ))}
-                        </div>
-                        <label class="text-gray-500 text-sm">
-                            Paternal genome
-                        </label>
-                    </div>
-                </div>
             </div>
+            <DNAVisualization genome={ratGenome} proteins={ratProteins} />
             <div class="mt-4 space-x-2">
                 <label for="rat-name">Name your rat:</label>
                 <input
