@@ -31,9 +31,9 @@ export default function Tree() {
         });
     }, []);
 
-    function isHighlightedRat(id: number) {
-        if (id == selected) return "text-red-500";
-        return "";
+    function isHighlightedRat(r: Rat) {
+        if (r.id == selected) return <mark>{r.name}</mark>;
+        return r.name;
     }
 
     function parseHash() {
@@ -48,20 +48,30 @@ export default function Tree() {
                 {rats.map((r: Rat) => {
                     return (
                         <li id={`${r.id}`}>
-                            <details class={isHighlightedRat(r.id)}>
-                                <summary>{r.name}</summary>
+                            <details>
+                                <summary>{isHighlightedRat(r)}</summary>
                                 <h3 class="font-bold">Parents</h3>
                                 <ul>
                                     <li>
                                         {"Mother: "}
-                                        {r.parent_1_id
-                                            ? ratMap.get(r.parent_1_id).name
-                                            : "No mother"}
+                                        {r.parent_1_id ? (
+                                            <a
+                                                class="text-indigo-400 underline"
+                                                href={`#${r.parent_1_id}`}
+                                            >
+                                                {ratMap.get(r.parent_1_id).name}
+                                            </a>
+                                        ) : (
+                                            "No mother"
+                                        )}
                                     </li>
                                     <li>
                                         {"Father: "}
                                         {r.parent_2_id ? (
-                                            <a href={`#${r.parent_2_id}`}>
+                                            <a
+                                                class="text-indigo-400 underline"
+                                                href={`#${r.parent_2_id}`}
+                                            >
                                                 {ratMap.get(r.parent_2_id).name}
                                             </a>
                                         ) : (
