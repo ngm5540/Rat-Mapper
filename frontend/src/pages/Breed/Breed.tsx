@@ -5,7 +5,7 @@ import { getAllRats } from "../../backend";
 import "../../style.css";
 import { RatComponent } from "../../components/Rat";
 
-function Parent(r: Rat | null, d: string) {
+function parent(r: Rat | null, d: string) {
     if (!r) return <p>{d}</p>
     return <RatComponent rat={r}/>
 }
@@ -32,31 +32,36 @@ export function Breed() {
     }, []);
 
     return (
-        <div class="major_component">
-            <h1 class="font-bold text-2xl">Breed</h1>
-            <h2 class="text-xl">Male</h2>
-            <select onChange={(e: any) => setFather(rats[e.target.value])}>
-            <option value={null}></option>
-            {
-                rats?.map((r: Rat, i: number) => {
-                    if (r.gender != Sex.MALE) return;
-                    return <option value={i}>{r.name}</option>;
-                })
-            }
-            </select>
-            <h2 class="text-xl">Female</h2>
-            <select onChange={(e: any) => setMother(rats[e.target.value])}>
-            <option value={null} ></option>
-            {
-                rats?.map((r: Rat, i: number) => {
-                    if (r.gender != Sex.FEMALE) return;
-                    return <option value={i}>{r.name}</option>;
-                })
-            }
-            </select>
-
-            <p>Mother: {Parent(mother, "...")} </p>
-            <p>Father: {Parent(father, "...")} </p>
+        <div class="major_component ">
+        <h1 class="font-bold text-2xl">Breed</h1>
+        <div class="grid grid-rows-2 md:grid-cols-2 grid-flow-row">
+            <div class="">
+                <h2 class="text-xl">Male</h2>
+                <select id="father-select"  class="border-black border-2 rounded-md" onChange={(e: any) => setFather(rats[e.target.value])}>
+                    <option value={null}>-</option>
+                    {
+                        rats?.map((r: Rat, i: number) => {
+                            if (r.gender != Sex.MALE) return;
+                            return <option value={i}>{r.name}</option>;
+                        })
+                    }
+                </select>
+                <p>{parent(father, "...")} </p>
+            </div>
+            <div class="">
+                <h2 class="text-xl">Female</h2>
+                <select id="mother-select" class="border-black border-2 rounded-md" onChange={(e: any) => setMother(rats[e.target.value])}>
+                    <option value={null}>-</option>
+                    {
+                        rats?.map((r: Rat, i: number) => {
+                            if (r.gender != Sex.FEMALE) return;
+                            return <option value={i}>{r.name}</option>;
+                        })
+                    }
+                </select>
+                <p>{parent(mother, "...")} </p>
+            </div>
+        </div>
         </div>
     );
 }
