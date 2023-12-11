@@ -2,8 +2,8 @@
  * Code responsible for representing rat traits and translating them to DNA/Proteins.
  * Anything in this file has absolutely crossed the threshold from
  * "sensible programming" to "spaghetti code" because genetics is
- * complicated and I'm not a web developer so I don't know how to sensibly
- * structure typescript code.
+ * complicated and javascript handles classes very strangely, which makes
+ * proper encapsulation impossible (to my knowledge).
  *
  * If you're reading this I'm sorry.
  *
@@ -17,6 +17,9 @@ import {
     encodeDNA,
 } from "./proteins";
 
+/**
+ * sex of rats
+ **/
 export enum Sex {
     MALE,
     FEMALE,
@@ -175,6 +178,7 @@ export function ratGenomeToProteins(rg: RatGenome): RatProteins {
     return rp;
 }
 
+/** Simulate meiosis for any trait which follows a mendellian inheritance pattern */
 function mendelMeiosis(pG: MI, mG: MI): MI {
     function m2s(m: MI) {
         switch (Number(m)) {
@@ -207,6 +211,9 @@ function mendelMeiosis(pG: MI, mG: MI): MI {
     }
 }
 
+/**
+ * Simulate meiosis for the fur color trait
+ **/
 function furColorMeiosis(mG: string, pG: string) {
     let m = mG[Math.random() < 0.5 ? 0 : 1];
     let p = pG[Math.random() < 0.5 ? 0 : 1];
@@ -215,9 +222,11 @@ function furColorMeiosis(mG: string, pG: string) {
 }
 
 /**
- * simulate meiosis
- * @param m maternal genome
- * @param p paternal genome
+ * simulate meiosis with the genomes of two rats
+ *
+ * @param m mother
+ * @param p father
+ * @return the potential child genome
  */
 export function meiosis(m: Rat, f: Rat): Rat {
     return {
@@ -234,6 +243,13 @@ export function meiosis(m: Rat, f: Rat): Rat {
     };
 }
 
+/**
+ * correlates the index of proteins or codons from a rat genome to traits.
+ * I couldn't think of a way to automate this, so it's all just magic numbers.  sorry.
+ *
+ * @param i index of the array
+ * @return string representing what the trait is
+ **/
 export function DNAIndexToTrait(i: number): string {
     if (i >= 0 && i < 3) {
         return "Fur color";
