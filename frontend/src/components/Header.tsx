@@ -1,6 +1,3 @@
-import { useLocation } from "preact-iso";
-import "./Header.css";
-
 export function Header() {
     return (
         <header>
@@ -12,15 +9,21 @@ export function Header() {
                         style="max-width:100px"
                         class="rounded-full hidden md:block"
                     />
-                    <button class="md:w-36 nav_button md:text-lg">
-                        Rat Mapper
-                    </button>
+                    <a class="md:text-lg">Rat Mapper</a>
                 </div>
                 <div class="overflow-auto ml-auto flex flex-row items-center space-x-4 w-1/3 justify-evenly">
-                    <a href="/">Home</a>
-                    <a href="/about">About</a>
-                    <a href="/breed">Breed</a>
-                    <a href="/tree">All rats</a>
+                    <a class="hover:text-indigo-200" href="/">
+                        Home
+                    </a>
+                    <a class="hover:text-indigo-200" href="/about">
+                        About
+                    </a>
+                    <a class="hover:text-indigo-200" href="/breed">
+                        Breed
+                    </a>
+                    <a class="hover:text-indigo-200" href="/tree">
+                        All rats
+                    </a>
                 </div>
             </div>
         </header>
