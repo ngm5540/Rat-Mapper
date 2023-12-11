@@ -181,7 +181,7 @@ export function DNAIndexToTrait(i: number): string {
 function mendel(rg: RatGenome, dom: string, rec: string, m: MI) {
     const domProtein = constructProteinDNA(dom);
     const recProtein = constructProteinDNA(rec);
-    switch (m) {
+    switch (Number(m)) {
         case MI.HOM_DOM:
             rg.mG += domProtein;
             rg.pG += recProtein;

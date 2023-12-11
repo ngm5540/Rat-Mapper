@@ -7,6 +7,7 @@ import { Test } from "./pages/Test/Test";
 import { About } from "./pages/About/About";
 import Home from "./pages/Home/Home";
 import { Breed } from "./pages/Breed/Breed";
+import Tree from "./pages/Tree/Tree";
 
 export function App() {
     return (
@@ -18,6 +19,7 @@ export function App() {
                     <Analyze path="/analyze/:dna" />
                     <Route component={Breed} path="/breed" />
                     <Route default component={NotFound} />
+                    <Route component={Tree} path="/tree" />
                     <Test path="/test" />
                     <Route component={About} path="/about" />
                 </Router>
