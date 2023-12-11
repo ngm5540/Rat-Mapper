@@ -1,3 +1,9 @@
+/**
+ * various react components for visualizing an @link Rat
+ *
+ * @author Nathan Jankowski (njj3397 [at] rit [dot] edu)
+ **/
+
 import {
     DNAIndexToTrait,
     Rat,
@@ -17,6 +23,7 @@ import {
 import { Proteins, START_CODON, dnaToCodons } from "../proteins";
 import { useEffect, useState } from "preact/hooks";
 
+// props for @link RatComponent
 export type RatComponentProps = {
     rat: Rat;
     ignoreName?: boolean;
@@ -55,10 +62,16 @@ export function RatComponent(p: RatComponentProps) {
     );
 }
 
+// props for @link DNAVisualization
 export type DNAVisualizationProps = {
     rat: Rat;
 };
 
+/**
+ * Display the dna and proteins corresponding with a rat.
+ *
+ * @param p props @link DNAVisualizationProps
+ **/
 export function DNAVisualization(p: DNAVisualizationProps) {
     const [ratGenome, setRatGenome] = useState<RatGenome>({
         mG: "",

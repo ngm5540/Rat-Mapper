@@ -1,3 +1,8 @@
+/**
+ * Page header
+ *
+ * @author Nathan Jankowski (njj3397 [at] rit . edu)
+ **/
 export function Header() {
     return (
         <header>
