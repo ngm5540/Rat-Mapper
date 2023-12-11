@@ -1,3 +1,10 @@
+/**
+ * The rat family tree.  This isn't an actual tree, but it shows all rats which
+ * are stored in the shed.
+ *
+ * @author Nathan Jankowski (njj3397 [at] rit dot edu)
+ **/
+
 import { useEffect, useState } from "preact/hooks";
 import { Rat } from "../../rat";
 import { getAllRats } from "../../backend";
@@ -31,11 +38,21 @@ export default function Tree() {
         });
     }, []);
 
+    /**
+     * function to conditionally display rat names.  If the rat is selected by
+     * @link selected, it will appear <mark>ed
+     *
+     * @param r rat
+     * @return how the rat name should be displayed
+     **/
     function isHighlightedRat(r: Rat) {
         if (r.id == selected) return <mark>{r.name}</mark>;
         return r.name;
     }
 
+    /**
+     * parse the hash from the url and set selected
+     **/
     function parseHash() {
         let id = Number(window.location.hash.slice(1));
         setSelected(id);
