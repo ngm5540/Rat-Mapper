@@ -7,6 +7,14 @@ import { DNAVisualization, RatComponent } from "../../components/Rat";
 export default function Tree() {
     const [rats, setRats] = useState<Rat[]>([]);
     const [ratMap, setMap] = useState<Map<number, Rat>>(new Map());
+    const [selected, setSelected] = useState<number>(-1);
+
+    // highlight the rat selected with the hash
+    useEffect(() => {
+        parseHash();
+        // change the highlighted rat when the hash changes
+        window.addEventListener("hashchange", parseHash);
+    }, []);
 
     // get all rats by ajax
     useEffect(() => {
@@ -23,14 +31,24 @@ export default function Tree() {
         });
     }, []);
 
+    function isHighlightedRat(id: number) {
+        if (id == selected) return "text-red-500";
+        return "";
+    }
+
+    function parseHash() {
+        let id = Number(window.location.hash.slice(1));
+        setSelected(id);
+    }
+
     return (
         <div class="major_component">
             <h1 class="text-2xl font-bold">Rats in the shed</h1>
             <ul>
                 {rats.map((r: Rat) => {
                     return (
-                        <li>
-                            <details>
+                        <li id={`${r.id}`}>
+                            <details class={isHighlightedRat(r.id)}>
                                 <summary>{r.name}</summary>
                                 <h3 class="font-bold">Parents</h3>
                                 <ul>
@@ -42,9 +60,13 @@ export default function Tree() {
                                     </li>
                                     <li>
                                         {"Father: "}
-                                        {r.parent_2_id
-                                            ? ratMap.get(r.parent_2_id).name
-                                            : "No father"}
+                                        {r.parent_2_id ? (
+                                            <a href={`#${r.parent_2_id}`}>
+                                                {ratMap.get(r.parent_2_id).name}
+                                            </a>
+                                        ) : (
+                                            "No father"
+                                        )}
                                     </li>
                                 </ul>
                                 <h3 class="font-bold">Traits</h3>
