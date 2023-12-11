@@ -1,13 +1,23 @@
 import { useEffect, useState } from "preact/hooks";
 
 import { Rat, Sex, meiosis } from "../../rat";
-import { getAllRats } from "../../backend";
+import { getAllRats, postRat } from "../../backend";
 import "../../style.css";
-import { RatComponent } from "../../components/Rat";
+import { DNAVisualization, RatComponent } from "../../components/Rat";
 
 function displayRat(r: Rat | null, d: string) {
     if (!r) return <p>{d}</p>;
     return <RatComponent rat={r} />;
+}
+
+function displayChild(r: Rat | null, d: string) {
+    if (!r) return <p>{d}</p>;
+    return (
+        <div>
+            <RatComponent rat={r} />
+            <DNAVisualization rat={r} />
+        </div>
+    );
 }
 
 export function Breed() {
@@ -37,13 +47,34 @@ export function Breed() {
     }, [mother, father]);
 
     function calculateChild() {
-        setChild(meiosis(mother, father));
+        let name = "";
+        if (child) name = child.name;
+        let newChild = meiosis(mother, father);
+        newChild.name = name;
+        setChild(newChild);
+    }
+
+    function submitChild() {
+        if (!child) return;
+
+        postRat(child).then((value: Response) => {
+            console.log(`Got response! ${value.status}`);
+            location.reload();
+        });
+    }
+
+    function handleName(name: string) {
+        if (child)
+            setChild({
+                ...child,
+                name: name,
+            });
     }
 
     return (
         <div class="major_component ">
             <h1 class="font-bold text-2xl">Breed</h1>
-            <div class="grid grid-rows-2 md:grid-cols-2 grid-flow-row">
+            <div class="grid grid-rows-2 md:grid-cols-2 grid-flow-row gap-4">
                 <div class="">
                     <h2 class="text-xl">Male</h2>
                     <select
@@ -59,7 +90,7 @@ export function Breed() {
                     </select>
                     <p>{displayRat(father, "...")} </p>
                 </div>
-                <div class="">
+                <div>
                     <h2 class="text-xl">Female</h2>
                     <select
                         id="mother-select"
@@ -76,15 +107,29 @@ export function Breed() {
                 </div>
             </div>
             <div>
-                <h3 class="text-lg">Child</h3>
+                <label class="text-lg">Child </label>
+                <input
+                    class="border-black border-2 rounded-md"
+                    onInput={(e: any) => handleName(e.target.value)}
+                    hidden={!child}
+                />
                 <button
                     class="bg-indigo-500 text-white border-2 rounded-md p-1"
                     onClick={calculateChild}
-                    hidden={mother === null || father === null}
+                    hidden={!child}
                 >
-                    Reroll
+                    Retry
                 </button>
-                {displayRat(child, "...")}
+                <button
+                    class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
+                    onClick={submitChild}
+                    hidden={!child}
+                    disabled={!child || child.name == ""}
+                >
+                    Send to shed
+                </button>
+
+                {displayChild(child, "")}
             </div>
         </div>
     );

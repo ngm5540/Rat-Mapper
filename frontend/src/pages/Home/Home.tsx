@@ -290,7 +290,7 @@ export default function Home() {
                     onClick={() => {
                         postRat(rat).then((value: Response) => {
                             console.log(`Got response! ${value.status}`);
-                            // location.reload();
+                            location.reload();
                         });
                     }}
                 >

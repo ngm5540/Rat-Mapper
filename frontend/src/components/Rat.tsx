@@ -10,6 +10,7 @@ import {
     mendelToString,
     ratGenomeToProteins,
     ratToDNA,
+    sexToString,
     tailLengthToString,
 } from "../rat";
 
@@ -48,6 +49,7 @@ export function RatComponent(p: RatComponentProps) {
                 Tail size: {tailLengthToString(p.rat.tail_size)} -{" "}
                 {mendelToString(p.rat.tail_size)}
             </li>
+            <li>Sex: {sexToString(p.rat.gender)}</li>
         </ul>
     );
 }

@@ -115,6 +115,15 @@ export function earSizeToString(m: MI) {
     }
 }
 
+export function sexToString(s: Sex) {
+    switch (Number(s)) {
+        case Sex.MALE:
+            return "male";
+        case Sex.FEMALE:
+            return "female";
+    }
+}
+
 /**
  * the requisite information to transfer a rat genome
  * genomeA and genomeB are identical in structure, but contain different genes,
