@@ -1,20 +1,10 @@
 import { useState, useEffect } from "preact/hooks";
 import {
-    EarSize,
-    EyeColor,
-    FurColor,
-    HairType,
+    DNAIndexToTrait,
     MI,
-    Rat,
     RatGenome,
     RatProteins,
     Sex,
-    TailLength,
-    earSizeToCross,
-    furColorToCross,
-    indexToTrait,
-    mendelToCross,
-    randDom,
     ratGenomeToProteins,
     ratToDNA,
 } from "../../rat";
@@ -22,12 +12,111 @@ import "./style.css";
 import { Proteins, START_CODON, dnaToCodons } from "../../proteins";
 import { postRat } from "../../backend";
 
-type HomeProps = {};
-type HomeState = {
-    rat: Rat;
-    ratGenome: RatGenome;
-    ratProteins: RatProteins;
-};
+export enum EyeColor {
+    BLACK,
+    RED,
+}
+
+export enum HairType {
+    WIRE,
+    SMOOTH,
+}
+
+export enum TailLength {
+    LONG,
+    SHORT,
+}
+
+export enum EarSize {
+    SMALL,
+    MEDIUM,
+    LARGE,
+}
+
+// the 37 enums for @link Rat
+export enum FurColor {
+    BLACK, // "BB" or "Br"
+    WHITE, // "WW" or "Wr"
+    DALMATION, // "BW"
+    ORANGE, // "rr"
+}
+
+export function furColorToCross(f: FurColor): string {
+    var gen: string;
+    switch (f) {
+        case FurColor.BLACK:
+            if (Math.random() < 0.5) {
+                gen = "BB";
+            } else {
+                if (Math.random() < 0.5) gen = "Br";
+                else gen = "rB";
+            }
+            break;
+        case FurColor.WHITE:
+            if (Math.random() < 0.5) {
+                gen = "WW";
+            } else {
+                if (Math.random() < 0.5) gen = "Wr";
+                else gen = "rW";
+            }
+            break;
+        case FurColor.DALMATION:
+            if (Math.random() < 0.5) gen = "BW";
+            else gen = "WB";
+            break;
+        case FurColor.ORANGE:
+            gen = "rr";
+            break;
+        default:
+            console.error("No such fur color!");
+            break;
+    }
+    return gen;
+}
+
+export function earSizeToCross(e: EarSize): MI {
+    var m: MI;
+    switch (e) {
+        case EarSize.LARGE:
+            m = MI.HOM_DOM;
+            break;
+        case EarSize.MEDIUM:
+            if (Math.random() < 0.5) m = MI.HET_DOM_M;
+            else m = MI.HET_DOM_P;
+            break;
+        case EarSize.SMALL:
+            m = MI.REC;
+            break;
+        default:
+            console.error("no such ear size!");
+            break;
+    }
+    return m;
+}
+
+export function randDom() {
+    const r = Math.random();
+    if (r < 0.333) {
+        return MI.HOM_DOM;
+    }
+    if (r > 0.333 && r < 0.666) {
+        return MI.HET_DOM_M;
+    }
+    return MI.HET_DOM_P;
+}
+
+/**
+ * @param v value of enum
+ * @param dom value of dominant
+ * @param rec value of recessive
+ **/
+export function mendelToCross(v: number, dom: number, rec: number): MI {
+    var m: MI;
+    if (v === dom) m = randDom();
+    else m = MI.REC;
+    return m;
+}
+
 export default function Home() {
     const [rat, setRat] = useState({
         id: -1,
@@ -118,7 +207,7 @@ export default function Home() {
     function getProteinTooltip(arr: Proteins, index: number): string {
         var protein = arr[index];
         if (protein === START_CODON) protein += " (Start)";
-        return `${indexToTrait(index)} - ${protein}`;
+        return `${DNAIndexToTrait(index)} - ${protein}`;
     }
 
     return (

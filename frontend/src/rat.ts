@@ -17,24 +17,21 @@ import {
     encodeDNA,
 } from "./proteins";
 
-export function indexToTrait(i: number): string {
-    if (i >= 0 && i < 3) {
-        return "Fur color";
-    }
-    if (i >= 3 && i < 6) {
-        return "Eye color";
-    }
-    if (i >= 6 && i < 9) {
-        return "Hair type";
-    }
-    if (i >= 9 && i < 12) {
-        return "Tail length";
-    }
-    if (i >= 12 && i < 15) {
-        return "Ear size";
-    }
-    return "";
+export enum Sex {
+    MALE,
+    FEMALE,
 }
+
+/**
+ * Mendellian inheritance schemes
+ **/
+export enum MI {
+    HOM_DOM, // homozygous dominant
+    HET_DOM_M, // heterozygous dominant maternal
+    HET_DOM_P, // heterozygous dominant paternal
+    REC, // recessive
+}
+
 /**
  * The characteristics for a rat that we're tracking
  **/
@@ -77,124 +74,23 @@ export interface RatProteins {
     pG: Proteins;
 }
 
-export enum EyeColor {
-    BLACK,
-    RED,
-}
-
-export enum HairType {
-    WIRE,
-    SMOOTH,
-}
-
-export enum TailLength {
-    LONG,
-    SHORT,
-}
-
-export enum EarSize {
-    SMALL,
-    MEDIUM,
-    LARGE,
-}
-
-// the 37 enums for @link Rat
-export enum FurColor {
-    BLACK, // "BB" or "Br"
-    WHITE, // "WW" or "Wr"
-    DALMATION, // "BW"
-    ORANGE, // "rr"
-}
-
-export function furColorToCross(f: FurColor): string {
-    var gen: string;
-    switch (f) {
-        case FurColor.BLACK:
-            if (Math.random() < 0.5) {
-                gen = "BB";
-            } else {
-                if (Math.random() < 0.5) gen = "Br";
-                else gen = "rB";
-            }
-            break;
-        case FurColor.WHITE:
-            if (Math.random() < 0.5) {
-                gen = "WW";
-            } else {
-                if (Math.random() < 0.5) gen = "Wr";
-                else gen = "rW";
-            }
-            break;
-        case FurColor.DALMATION:
-            if (Math.random() < 0.5) gen = "BW";
-            else gen = "WB";
-            break;
-        case FurColor.ORANGE:
-            gen = "rr";
-            break;
-        default:
-            console.error("No such fur color!");
-            break;
+export function DNAIndexToTrait(i: number): string {
+    if (i >= 0 && i < 3) {
+        return "Fur color";
     }
-    return gen;
-}
-
-export function earSizeToCross(e: EarSize): MI {
-    var m: MI;
-    switch (e) {
-        case EarSize.LARGE:
-            m = MI.HOM_DOM;
-            break;
-        case EarSize.MEDIUM:
-            if (Math.random() < 0.5) m = MI.HET_DOM_M;
-            else m = MI.HET_DOM_P;
-            break;
-        case EarSize.SMALL:
-            m = MI.REC;
-            break;
-        default:
-            console.error("no such ear size!");
-            break;
+    if (i >= 3 && i < 6) {
+        return "Eye color";
     }
-    return m;
-}
-
-/**
- * @param v value of enum
- * @param dom value of dominant
- * @param rec value of recessive
- **/
-export function mendelToCross(v: number, dom: number, rec: number): MI {
-    var m: MI;
-    if (v === dom) m = randDom();
-    else m = MI.REC;
-    return m;
-}
-
-export enum Sex {
-    MALE,
-    FEMALE,
-}
-
-/**
- * Mendellian inheritance schemes
- **/
-export enum MI {
-    HOM_DOM, // homozygous dominant
-    HET_DOM_M, // heterozygous dominant maternal
-    HET_DOM_P, // heterozygous dominant paternal
-    REC, // recessive
-}
-
-export function randDom() {
-    const r = Math.random();
-    if (r < 0.333) {
-        return MI.HOM_DOM;
+    if (i >= 6 && i < 9) {
+        return "Hair type";
     }
-    if (r > 0.333 && r < 0.666) {
-        return MI.HET_DOM_M;
+    if (i >= 9 && i < 12) {
+        return "Tail length";
     }
-    return MI.HET_DOM_P;
+    if (i >= 12 && i < 15) {
+        return "Ear size";
+    }
+    return "";
 }
 
 /**
