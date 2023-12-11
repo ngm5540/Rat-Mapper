@@ -47,42 +47,52 @@ export default function Tree() {
             <ul>
                 {rats.map((r: Rat) => {
                     return (
-                        <li id={`${r.id}`}>
+                        <li id={`${r.id}`} class="py-2">
                             <details>
                                 <summary>{isHighlightedRat(r)}</summary>
-                                <h3 class="font-bold">Parents</h3>
-                                <ul>
-                                    <li>
-                                        {"Mother: "}
-                                        {r.parent_1_id ? (
-                                            <a
-                                                class="text-indigo-400 underline"
-                                                href={`#${r.parent_1_id}`}
-                                            >
-                                                {ratMap.get(r.parent_1_id).name}
-                                            </a>
-                                        ) : (
-                                            "No mother"
-                                        )}
-                                    </li>
-                                    <li>
-                                        {"Father: "}
-                                        {r.parent_2_id ? (
-                                            <a
-                                                class="text-indigo-400 underline"
-                                                href={`#${r.parent_2_id}`}
-                                            >
-                                                {ratMap.get(r.parent_2_id).name}
-                                            </a>
-                                        ) : (
-                                            "No father"
-                                        )}
-                                    </li>
-                                </ul>
-                                <h3 class="font-bold">Traits</h3>
-                                <RatComponent rat={r} ignoreName={true} />
-                                <h3 class="font-bold">Genome</h3>
-                                <DNAVisualization rat={r} />
+                                <div class="ml-0 md:ml-6">
+                                    <h3 class="font-bold">Parents</h3>
+                                    <ul>
+                                        <li>
+                                            {"Mother: "}
+                                            {r.parent_1_id ? (
+                                                <a
+                                                    class="text-indigo-400 underline"
+                                                    href={`#${r.parent_1_id}`}
+                                                >
+                                                    {
+                                                        ratMap.get(
+                                                            r.parent_1_id,
+                                                        ).name
+                                                    }
+                                                </a>
+                                            ) : (
+                                                "No mother"
+                                            )}
+                                        </li>
+                                        <li>
+                                            {"Father: "}
+                                            {r.parent_2_id ? (
+                                                <a
+                                                    class="text-indigo-400 underline"
+                                                    href={`#${r.parent_2_id}`}
+                                                >
+                                                    {
+                                                        ratMap.get(
+                                                            r.parent_2_id,
+                                                        ).name
+                                                    }
+                                                </a>
+                                            ) : (
+                                                "No father"
+                                            )}
+                                        </li>
+                                    </ul>
+                                    <h3 class="font-bold">Traits</h3>
+                                    <RatComponent rat={r} ignoreName={true} />
+                                    <h3 class="font-bold">Genome</h3>
+                                    <DNAVisualization rat={r} />
+                                </div>
                             </details>
                         </li>
                     );
