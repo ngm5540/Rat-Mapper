@@ -74,7 +74,7 @@ export function Breed() {
     return (
         <div class="major_component ">
             <h1 class="font-bold text-2xl">Breed</h1>
-            <div class="grid grid-rows-2 md:grid-cols-2 grid-flow-row gap-4">
+            <div class="grid grid-rows-2 grid-cols-auto md:grid-cols-2 grid-flow-row gap-x-4">
                 <div class="">
                     <h2 class="text-xl">Male</h2>
                     <select
@@ -105,31 +105,31 @@ export function Breed() {
                     </select>
                     <p>{displayRat(mother, "...")} </p>
                 </div>
-            </div>
-            <div>
-                <label class="text-lg">Child </label>
-                <input
-                    class="border-black border-2 rounded-md"
-                    onInput={(e: any) => handleName(e.target.value)}
-                    hidden={!child}
-                />
-                <button
-                    class="bg-indigo-500 text-white border-2 rounded-md p-1"
-                    onClick={calculateChild}
-                    hidden={!child}
-                >
-                    Retry
-                </button>
-                <button
-                    class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
-                    onClick={submitChild}
-                    hidden={!child}
-                    disabled={!child || child.name == ""}
-                >
-                    Send to shed
-                </button>
+                <div class="col-span-2">
+                    <label class="text-lg">Child </label>
+                    <input
+                        class="border-black border-2 rounded-md"
+                        onInput={(e: any) => handleName(e.target.value)}
+                        hidden={!child}
+                    />
+                    <button
+                        class="bg-indigo-500 text-white border-2 rounded-md p-1"
+                        onClick={calculateChild}
+                        hidden={!child}
+                    >
+                        Retry
+                    </button>
+                    <button
+                        class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
+                        onClick={submitChild}
+                        hidden={!child}
+                        disabled={!child || child.name == ""}
+                    >
+                        Send to shed
+                    </button>
 
-                {displayChild(child, "")}
+                    {displayChild(child, "")}
+                </div>
             </div>
         </div>
     );
