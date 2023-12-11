@@ -50,13 +50,13 @@ export interface Rat {
 
 export function furColorToString(f: string) {
     // this is code i am actually embarrassed about writing.  sorry.
-    if (f[0] === 'r' && f[1] === 'r') return 'orange';
-    if (f[0] === 'B' && f[1] === 'W') return 'dalmation';
-    if (f[0] === 'W' && f[1] === 'B') return 'dalmation';
-    if (f[0] === 'B' && f[1] !== 'W') return 'black';
-    if (f[1] === 'B' && f[0] !== 'W') return 'black';
-    if (f[0] === 'W' && f[1] !== 'B') return 'white';
-    if (f[1] === 'W' && f[0] !== 'B') return 'white';
+    if (f[0] === "r" && f[1] === "r") return "orange";
+    if (f[0] === "B" && f[1] === "W") return "dalmation";
+    if (f[0] === "W" && f[1] === "B") return "dalmation";
+    if (f[0] === "B" && f[1] !== "W") return "black";
+    if (f[1] === "B" && f[0] !== "W") return "black";
+    if (f[0] === "W" && f[1] !== "B") return "white";
+    if (f[1] === "W" && f[0] !== "B") return "white";
 }
 
 export function mendelToString(m: MI) {
@@ -259,4 +259,63 @@ export function ratGenomeToProteins(rg: RatGenome): RatProteins {
     rp.pG = encodeDNA(rg.pG);
 
     return rp;
+}
+
+function mendelMeiosis(pG: MI, mG: MI): MI {
+    function m2s(m: MI) {
+        switch (Number(m)) {
+            case MI.HOM_DOM:
+                return "DD";
+            case MI.HET_DOM_M:
+                return "Dd";
+            case MI.HET_DOM_P:
+                return "dD";
+            case MI.REC:
+                return "dd";
+            default:
+                console.error("que");
+        }
+    }
+
+    let m = m2s(mG)[Math.random() < 0.5 ? 0 : 1];
+    let p = m2s(pG)[Math.random() < 0.5 ? 0 : 1];
+    switch (m + p) {
+        case "DD":
+            return MI.HOM_DOM;
+        case "Dd":
+            return MI.HET_DOM_M;
+        case "dD":
+            return MI.HET_DOM_P;
+        case "dd":
+            return MI.REC;
+        default:
+            console.error("que");
+    }
+}
+
+function furColorMeiosis(mG: string, pG: string) {
+    let m = mG[Math.random() < 0.5 ? 0 : 1];
+    let p = pG[Math.random() < 0.5 ? 0 : 1];
+
+    return m + p;
+}
+
+/**
+ * simulate meiosis
+ * @param m maternal genome
+ * @param p paternal genome
+ */
+export function meiosis(m: Rat, f: Rat): Rat {
+    return {
+        name: "",
+        fur_color: furColorMeiosis(m.fur_color, f.fur_color),
+        eye_color: mendelMeiosis(m.eye_color, f.eye_color),
+        hair: mendelMeiosis(m.hair, f.hair),
+        ear_size: mendelMeiosis(m.ear_size, f.ear_size),
+        tail_size: mendelMeiosis(m.tail_size, f.tail_size),
+        gender: Math.random() < 0.5 ? Sex.FEMALE : Sex.MALE,
+        id: null,
+        parent_1_id: m.id,
+        parent_2_id: f.id,
+    };
 }
