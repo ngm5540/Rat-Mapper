@@ -1,6 +1,12 @@
+/**
+ * A simple about page
+ *
+ * @author Nathan Jankowski (njj3397 at rit dot edu)
+ **/
 import { DNAMap, START_CODON } from "../../proteins";
 import "../../style.css";
 
+// display a mendellian trait
 function mendelTrait(
     name: string,
     dom: string,
@@ -45,7 +51,7 @@ export function About() {
                         <p>Black (dominant): His (DNA: {DNAMap.get("His")})</p>
                         <p>White (dominant): Thr (DNA: {DNAMap.get("Thr")})</p>
                         <p>
-                            No pigment (recessive): Lys (DNA:
+                            No pigment (recessive): Lys (DNA:{" "}
                             {DNAMap.get("Lys")})
                         </p>
                         <p>
