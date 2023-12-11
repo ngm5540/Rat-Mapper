@@ -48,82 +48,6 @@ export interface Rat {
     gender: Sex;
 }
 
-export function furColorToString(f: string) {
-    // this is code i am actually embarrassed about writing.  sorry.
-    if (f[0] === "r" && f[1] === "r") return "orange";
-    if (f[0] === "B" && f[1] === "W") return "dalmation";
-    if (f[0] === "W" && f[1] === "B") return "dalmation";
-    if (f[0] === "B" && f[1] !== "W") return "black";
-    if (f[1] === "B" && f[0] !== "W") return "black";
-    if (f[0] === "W" && f[1] !== "B") return "white";
-    if (f[1] === "W" && f[0] !== "B") return "white";
-}
-
-export function mendelToString(m: MI) {
-    switch (Number(m)) {
-        case MI.HOM_DOM:
-            return "homozygous dominant";
-        case MI.HET_DOM_M:
-        case MI.HET_DOM_P:
-            return "heterozygous dominant";
-        case MI.REC:
-            return "recessive";
-    }
-}
-export function eyeColorToString(m: MI) {
-    switch (Number(m)) {
-        case MI.HOM_DOM:
-        case MI.HET_DOM_M:
-        case MI.HET_DOM_P:
-            return "black";
-        case MI.REC:
-            return "red";
-    }
-}
-
-export function hairTypeToString(m: MI) {
-    switch (Number(m)) {
-        case MI.HOM_DOM:
-        case MI.HET_DOM_M:
-        case MI.HET_DOM_P:
-            return "wirey";
-        case MI.REC:
-            return "smooth";
-    }
-}
-
-export function tailLengthToString(m: MI) {
-    switch (Number(m)) {
-        case MI.HOM_DOM:
-        case MI.HET_DOM_M:
-        case MI.HET_DOM_P:
-            return "long";
-        case MI.REC:
-            return "short";
-    }
-}
-
-export function earSizeToString(m: MI) {
-    switch (Number(m)) {
-        case MI.HOM_DOM:
-            return "large";
-        case MI.HET_DOM_M:
-        case MI.HET_DOM_P:
-            return "medium";
-        case MI.REC:
-            return "small";
-    }
-}
-
-export function sexToString(s: Sex) {
-    switch (Number(s)) {
-        case Sex.MALE:
-            return "male";
-        case Sex.FEMALE:
-            return "female";
-    }
-}
-
 /**
  * the requisite information to transfer a rat genome
  * genomeA and genomeB are identical in structure, but contain different genes,
@@ -148,25 +72,6 @@ export interface RatProteins {
     genome: RatGenome;
     mG: Proteins;
     pG: Proteins;
-}
-
-export function DNAIndexToTrait(i: number): string {
-    if (i >= 0 && i < 3) {
-        return "Fur color";
-    }
-    if (i >= 3 && i < 6) {
-        return "Eye color";
-    }
-    if (i >= 6 && i < 9) {
-        return "Hair type";
-    }
-    if (i >= 9 && i < 12) {
-        return "Tail length";
-    }
-    if (i >= 12 && i < 15) {
-        return "Ear size";
-    }
-    return "";
 }
 
 /**
@@ -327,4 +232,99 @@ export function meiosis(m: Rat, f: Rat): Rat {
         parent_1_id: m.id,
         parent_2_id: f.id,
     };
+}
+
+export function DNAIndexToTrait(i: number): string {
+    if (i >= 0 && i < 3) {
+        return "Fur color";
+    }
+    if (i >= 3 && i < 6) {
+        return "Eye color";
+    }
+    if (i >= 6 && i < 9) {
+        return "Hair type";
+    }
+    if (i >= 9 && i < 12) {
+        return "Tail length";
+    }
+    if (i >= 12 && i < 15) {
+        return "Ear size";
+    }
+    return "";
+}
+
+export function furColorToString(f: string) {
+    // this is code i am actually embarrassed about writing.  sorry.
+    if (f[0] === "r" && f[1] === "r") return "orange";
+    if (f[0] === "B" && f[1] === "W") return "dalmation";
+    if (f[0] === "W" && f[1] === "B") return "dalmation";
+    if (f[0] === "B" && f[1] !== "W") return "black";
+    if (f[1] === "B" && f[0] !== "W") return "black";
+    if (f[0] === "W" && f[1] !== "B") return "white";
+    if (f[1] === "W" && f[0] !== "B") return "white";
+}
+
+export function mendelToString(m: MI) {
+    switch (Number(m)) {
+        case MI.HOM_DOM:
+            return "homozygous dominant";
+        case MI.HET_DOM_M:
+        case MI.HET_DOM_P:
+            return "heterozygous dominant";
+        case MI.REC:
+            return "recessive";
+    }
+}
+export function eyeColorToString(m: MI) {
+    switch (Number(m)) {
+        case MI.HOM_DOM:
+        case MI.HET_DOM_M:
+        case MI.HET_DOM_P:
+            return "black";
+        case MI.REC:
+            return "red";
+    }
+}
+
+export function hairTypeToString(m: MI) {
+    switch (Number(m)) {
+        case MI.HOM_DOM:
+        case MI.HET_DOM_M:
+        case MI.HET_DOM_P:
+            return "wirey";
+        case MI.REC:
+            return "smooth";
+    }
+}
+
+export function tailLengthToString(m: MI) {
+    switch (Number(m)) {
+        case MI.HOM_DOM:
+        case MI.HET_DOM_M:
+        case MI.HET_DOM_P:
+            return "long";
+        case MI.REC:
+            return "short";
+    }
+}
+
+export function earSizeToString(m: MI) {
+    switch (Number(m)) {
+        case MI.HOM_DOM:
+            return "large";
+        case MI.HET_DOM_M:
+        case MI.HET_DOM_P:
+            return "medium";
+        case MI.REC:
+            return "small";
+    }
+}
+
+export function sexToString(s: Sex) {
+    switch (Number(s)) {
+        case Sex.MALE:
+            return "male";
+        case Sex.FEMALE:
+            return "female";
+    }
 }
