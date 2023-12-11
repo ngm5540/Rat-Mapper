@@ -1,41 +1,41 @@
-import { useState, useEffect } from "preact/hooks";
-import {
-    DNAIndexToTrait,
-    MI,
-    Rat,
-    RatGenome,
-    RatProteins,
-    Sex,
-    ratGenomeToProteins,
-    ratToDNA,
-} from "../../rat";
+/**
+ * Home/rat creation page. This is more or less a form to create a rat from a
+ * set of options.
+ *
+ * @author Nathan Jankowski (njj3397 @ rit dot edu)
+ **/
+import { useState } from "preact/hooks";
+import { MI, Rat, Sex } from "../../rat";
 import "./style.css";
-import { Proteins, START_CODON, dnaToCodons } from "../../proteins";
 import { postRat } from "../../backend";
 import { DNAVisualization } from "../../components/Rat";
 
+// eye color as used in form
 export enum EyeColor {
     BLACK,
     RED,
 }
 
+// hair type as used in form
 export enum HairType {
     WIRE,
     SMOOTH,
 }
 
+// tail length as used in form
 export enum TailLength {
     LONG,
     SHORT,
 }
 
+// ear size as used in form
 export enum EarSize {
     SMALL,
     MEDIUM,
     LARGE,
 }
 
-// the 37 enums for @link Rat
+// fur color as used in form
 export enum FurColor {
     BLACK, // "BB" or "Br"
     WHITE, // "WW" or "Wr"
@@ -43,6 +43,14 @@ export enum FurColor {
     ORANGE, // "rr"
 }
 
+/**
+ * generate a string value from @link FurColor.
+ * The first letter is the maternal gene, the second is the paternal.
+ * B is black fur, W is white fur, r is recessive
+ *
+ * @param f FurColor
+ * @return a string representing fur color.
+ **/
 export function furColorToCross(f: FurColor): string {
     var gen: string;
     switch (f) {
@@ -76,6 +84,14 @@ export function furColorToCross(f: FurColor): string {
     return gen;
 }
 
+/**
+ * convert ear size to an @link MI value.
+ * This needs a special function because ear size follows incomplete dominance,
+ * but it still uses the same heterozygous/homozygous representation.
+ *
+ * @param e EarSize
+ * @return the MI value
+ **/
 export function earSizeToCross(e: EarSize): MI {
     var m: MI;
     switch (e) {
@@ -96,6 +112,12 @@ export function earSizeToCross(e: EarSize): MI {
     return m;
 }
 
+/**
+ * get a random dominance.  This is useful because the form doesn't actually
+ * specify a kind of dominance, just whether a trait is dominant or not.
+ *
+ * @return a MI dominance value (HOM_DOM, HET_DOM_M, HET_DOM_P)
+ **/
 export function randDom() {
     const r = Math.random();
     if (r < 0.333) {
@@ -108,9 +130,13 @@ export function randDom() {
 }
 
 /**
- * @param v value of enum
- * @param dom value of dominant
- * @param rec value of recessive
+ * convert the enums used for the form into a valid @link MI value.  If the
+ * trait is dominant, this also generates a random kind of dominance.
+ *
+ * @param v value of trait
+ * @param dom value of dominant trait
+ * @param rec value of recessive trait
+ * @return the corresponding mendellian inheritance scheme
  **/
 export function mendelToCross(v: number, dom: number, rec: number): MI {
     var m: MI;
@@ -120,14 +146,17 @@ export function mendelToCross(v: number, dom: number, rec: number): MI {
     return m;
 }
 
+// wrapper to @link mendelToCross
 export function eyeColorToCross(e: EyeColor): MI {
     return mendelToCross(e, EyeColor.BLACK, EyeColor.RED);
 }
 
+// wrapper to @link mendelToCross
 export function hairTypeToCross(h: HairType) {
     return mendelToCross(h, HairType.WIRE, HairType.SMOOTH);
 }
 
+// wrapper to @link mendelToCross
 export function tailLengthToCross(t: TailLength) {
     return mendelToCross(t, TailLength.LONG, TailLength.SHORT);
 }
