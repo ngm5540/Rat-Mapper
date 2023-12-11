@@ -39,55 +39,6 @@ export type Proteins = string[];
 export type Genome = string;
 
 /**
- * Return type for {@link validateDNA}.
- **/
-export type DNAValidationResult = {
-    /** true if dna is valid */
-    isValid: boolean;
-    /** reason why dna is invalid */
-    reason: string;
-};
-
-/**
- * Ensures a string of DNA is valid.
- *
- * @param dna strand of dna
- * @returns @link DNAValidationResult
- **/
-export function validateDNA(dna: string): DNAValidationResult {
-    // TODO this doesn't actually check that every start codon has a stop codon;
-    // just that the whole string starts/ends with a start & stop codon
-    const rna = rnaPolymerase(dna);
-    var result = {} as DNAValidationResult;
-
-    if (!RNA_RE.test(rna)) {
-        result.isValid = false;
-        result.reason = "Strand contains invalid characters!";
-        return result;
-    }
-    if (rna.length % 3 != 0) {
-        result.isValid = false;
-        result.reason =
-            "DNA has incomplete codons (length is not divisible by 3)";
-        return result;
-    }
-    if (rna.slice(0, 3) != START_CODON) {
-        result.isValid = false;
-        result.reason = "rna does not start with the start codon";
-        return result;
-    }
-
-    if (rna.slice(-4, -1) != STOP_CODON) {
-        result.isValid = false;
-        result.reason = "Strand does not end with a stop codon";
-        return result;
-    }
-
-    result.isValid = true;
-    return result;
-}
-
-/**
  * Encode a DNA strand into proteins.<br>
  * This function does no validation. To ensure the dna is a valid snippet
  * use @link validateDNA
@@ -108,6 +59,12 @@ export function encodeDNA(dna: string): Proteins {
     return parsed;
 }
 
+/**
+ * Convert a dna string into groups of 3 nucleotides
+ *
+ * @param dna string of nucleotides (@see RNA_RE) which is divisible by 3
+ * @return array of codons
+ **/
 export function dnaToCodons(dna: string): string[] {
     var r = [];
     for (
