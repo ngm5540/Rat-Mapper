@@ -1,3 +1,9 @@
+/**
+ * breeding page to simulate crossing two rats.
+ *
+ * @author Nathan Jankowski (njj3397 <at> rit dot edu)
+ **/
+
 import { useEffect, useState } from "preact/hooks";
 
 import { Rat, Sex, meiosis } from "../../rat";
@@ -5,11 +11,25 @@ import { getAllRats, postRat } from "../../backend";
 import "../../style.css";
 import { DNAVisualization, RatComponent } from "../../components/Rat";
 
-function displayRat(r: Rat | null, d: string) {
+/**
+ * display the parent rat.  This is mostly here to do a null check, because I couldn't figure out how to do it without.
+ *
+ * @param r rat, or null if none is selected yet
+ * @param d default text if no rat is selected
+ * @return html component displaying the rat or default text
+ **/
+function displayParent(r: Rat | null, d: string) {
     if (!r) return <p>{d}</p>;
     return <RatComponent rat={r} />;
 }
 
+/**
+ * display the child rat.  This is similar to @link displayParent
+ * also gives a dna visualization.
+ *
+ * @param r rat or null if no rat has been generated
+ * @return html component representing the child rat
+ **/
 function displayChild(r: Rat | null, d: string) {
     if (!r) return <p>{d}</p>;
     return (
@@ -41,11 +61,13 @@ export function Breed() {
             });
     }, []);
 
+    // recalculate child if mother or father change
     useEffect(() => {
         if (!mother || !father) return;
         calculateChild();
     }, [mother, father]);
 
+    // automated function to run meiosis with the mother and father
     function calculateChild() {
         let name = "";
         if (child) name = child.name;
@@ -54,6 +76,7 @@ export function Breed() {
         setChild(newChild);
     }
 
+    // callback to send child to the backend
     function submitChild() {
         if (!child) return;
 
@@ -63,6 +86,7 @@ export function Breed() {
         });
     }
 
+    // handler function for the name box
     function handleName(name: string) {
         if (child)
             setChild({
@@ -88,7 +112,7 @@ export function Breed() {
                             return <option value={i}>{r.name}</option>;
                         })}
                     </select>
-                    <p>{displayRat(father, "...")} </p>
+                    <p>{displayParent(father, "...")} </p>
                 </div>
                 <div>
                     <h2 class="text-xl">Female</h2>
@@ -103,7 +127,7 @@ export function Breed() {
                             return <option value={i}>{r.name}</option>;
                         })}
                     </select>
-                    <p>{displayRat(mother, "...")} </p>
+                    <p>{displayParent(mother, "...")} </p>
                 </div>
                 <div class="col-span-2">
                     <h2 class="text-xl">Child </h2>
