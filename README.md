@@ -8,6 +8,20 @@ underlying DNA, as well as the proteins which code for the traits.  Additionally
 we could simulate meiosis to show what the offspring of two different rats would
 be.
 
+## How to run
+
+### Backend
+1. Enter the `backend/` directory
+2. Make a python virtual environment with
+`python3 -m venv venv/` and enter it with `source venv/bin/activate`.
+3. Install dependencies with `python3 -m pip install -r ./requirements.txt`
+4. run the server with `python3 run.py`
+
+### Frontend
+1. enter the `frontend/` directory
+2. Install dependencies with `npm install`
+3. Run the development server with `npm run dev`
+
 ## Technology
 The project is implemented as a full-stack web application. It involves a
 Single-page application which communicates with a RESTful API for storage
