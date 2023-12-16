@@ -6,7 +6,9 @@
 
 import { Rat } from "./rat";
 
-const BACKEND_URL = "http://127.0.0.1:5000";
+// TODO is there a better way of storing this
+// TODO ssl would be nice but ultimately not essential
+const BACKEND_URL = "http://ratmapper.student.rit.edu:5000";
 const HEADERS = {
     "Content-Type": "application/json",
 };
