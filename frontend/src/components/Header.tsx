@@ -9,7 +9,7 @@ export function Header() {
             <div class="flex items-center sm:px-2 md:p-4 bg-indigo-500 text-white">
                 <div class="md:w-1/3 flex flex-row items-center space-x-2 md:space-x-8">
                     <img
-                        src="/public/spin.gif"
+                        src="/spin.gif"
                         alt="Rat spinning horizontally"
                         style="max-width:100px"
                         class="rounded-full hidden md:block"
