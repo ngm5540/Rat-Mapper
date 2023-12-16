@@ -31,6 +31,14 @@ export function Header() {
                     </a>
                 </div>
             </div>
+            <div class="bg-red-600 text-white">
+                <p class="py-2 pl-6">
+                This is a public preview.  Rat creation and genome generation both work,
+                and you can still breed and view existing rats, but submissions have
+                been temporarily disabled to prevent abuse.<br/>
+                Check back later to submit a rat :)
+                </p>
+            </div>
         </header>
     );
 }
