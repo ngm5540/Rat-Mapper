@@ -92,7 +92,7 @@ function mendel(rg: RatGenome, dom: string, rec: string, m: MI) {
     switch (Number(m)) {
         case MI.HOM_DOM:
             rg.mG += domProtein;
-            rg.pG += recProtein;
+            rg.pG += domProtein;
             break;
         case MI.HET_DOM_M:
             rg.mG += domProtein;
