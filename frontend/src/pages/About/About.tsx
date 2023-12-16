@@ -30,13 +30,18 @@ export function About() {
     return (
         <div class="major_component">
             <h1 class="text-2xl">About</h1>
-            <p>
+            <p class="mb-2">
                 Rat mapper is a project to simulate a rat genome to investigate
                 the relationship between phenotypic traits and genotypes. To do
                 this, we created a simplified "simulated" rat genome, which
                 encodes for a select number of phenotypic traits. This allowed
                 us to learn more about how DNA, proteins, and physical traits
                 relate.
+                <br/>
+                The source code is available on{" "}
+                <a class="text-indigo-700 underline"
+                   href="https://github.com/ngm5540/Rat-Mapper">Github</a>.
+                <br />
             </p>
             <h2 class="text-xl">Traits</h2>
             <p class="italic">
