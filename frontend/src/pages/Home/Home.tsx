@@ -93,23 +93,18 @@ export function furColorToCross(f: FurColor): string {
  * @return the MI value
  **/
 export function earSizeToCross(e: EarSize): MI {
-    var m: MI;
     switch (e) {
         case EarSize.LARGE:
-            m = MI.HOM_DOM;
-            break;
+            return MI.HOM_DOM;
         case EarSize.MEDIUM:
-            if (Math.random() < 0.5) m = MI.HET_DOM_M;
-            else m = MI.HET_DOM_P;
-            break;
+            if (Math.random() < 0.5) return MI.HET_DOM_M;
+            else return MI.HET_DOM_P;
         case EarSize.SMALL:
-            m = MI.REC;
-            break;
+            return MI.REC;
         default:
             console.error("no such ear size!");
             break;
     }
-    return m;
 }
 
 /**
