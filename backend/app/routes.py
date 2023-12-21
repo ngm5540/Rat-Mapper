@@ -14,13 +14,11 @@ def validate(rat):
     # make sure the hair is valid
     fc = rat.get('fur_color')
     if not fc or re.fullmatch('(B|W|r){2}', fc) == None:
-        print(f'rejected {rat}: invalid fur color')
         return False
 
     # make sure name is alphabetic characters
     name = rat.get('name')
     if not name or re.fullmatch('([a-z]|[A-Z]|\\ )+', name) == None:
-        print(f'rejected {rat}: name is not alphanumeric')
         return False
 
     return 1 in predict_profanity([name, name.replace(' ', '')])
@@ -50,7 +48,6 @@ def save_rat():
 
     if not validate(json):
         # the request is technically valid but we're ignoring it
-        print('rat failed validation')
         return OK
 
     # ignore specified id; should be managed by the server
