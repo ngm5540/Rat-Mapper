@@ -106,17 +106,17 @@ export function DNAVisualization(p: DNAVisualizationProps) {
     }
 
     return (
-        <div class="inline-flex flex-col">
+        <div class="inline-flex flex-col w-full md:w-auto">
             <div class="flex flex-col">
                 <div class="flex">
                     <p>5'</p>
                     <p class="ml-auto">3'</p>
                 </div>
-                <div class="flex flex-row">
+                <div class="flex flex-row overflow-scroll md:overflow-visible">
                     {dna(ratGenome.mG, ratProteins.mG)}
                 </div>
                 <p class="text-gray-500 text-sm">Maternal genome</p>
-                <div class="flex flex-row">
+                <div class="flex flex-row overflow-scroll md:overflow-visible">
                     {dna(ratGenome.pG, ratProteins.pG)}
                 </div>
                 <p class="text-gray-500 text-sm">Paternal genome</p>
