@@ -321,7 +321,12 @@ export default function Home() {
                 >
                     Send to shed
                 </button>
-                <p hidden={rat.name == "" || NAME_RE.test(rat.name)}>Names can only contain alphanumeric characters and spaces!</p>
+                <p
+                    class="text-red-500"
+                    hidden={rat.name == "" || NAME_RE.test(rat.name)}
+                >
+                    Names can only contain alphanumeric characters and spaces!
+                </p>
             </div>
         </div>
     );

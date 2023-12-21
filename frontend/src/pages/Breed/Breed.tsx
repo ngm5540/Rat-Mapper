@@ -149,11 +149,19 @@ export function Breed() {
                         class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
                         onClick={submitChild}
                         hidden={!child}
-                        disabled={child?.name == "" || !NAME_RE.test(child?.name)}
+                        disabled={
+                            child?.name == "" || !NAME_RE.test(child?.name)
+                        }
                     >
                         Send to shed
                     </button>
-                    <p hidden={child?.name == "" || NAME_RE.test(child?.name)}>Names can only contain alphanumeric characters and spaces!</p>
+                    <p
+                        class="text-red-500"
+                        hidden={child?.name == "" || NAME_RE.test(child?.name)}
+                    >
+                        Names can only contain alphanumeric characters and
+                        spaces!
+                    </p>
 
                     {displayChild(child, "")}
                 </div>
