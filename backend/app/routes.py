@@ -23,7 +23,7 @@ def validate(rat):
         print(f'rejected {rat}: name is not alphanumeric')
         return False
 
-    return predict_profanity([rat['name']])[0] == 0
+    return 1 in predict_profanity([name, name.replace(' ', '')])
 
 @app.route('/get/<rat_id>')
 def get_rat(rat_id:int):
