@@ -98,8 +98,8 @@ export function Breed() {
     return (
         <div class="major_component ">
             <h1 class="font-bold text-2xl">Breed</h1>
-            <div class="grid grid-rows-2 grid-cols-auto md:grid-cols-2 grid-flow-row gap-x-4">
-                <div class="">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-8 md:gap-14 mb-4">
+                <div>
                     <h2 class="text-xl">Male</h2>
                     <select
                         id="father-select"
@@ -129,7 +129,8 @@ export function Breed() {
                     </select>
                     <p>{displayParent(mother, "...")} </p>
                 </div>
-                <div class="col-span-2">
+            </div>
+                <div class="flex-row">
                     <h2 class="text-xl">Child </h2>
                     <input
                         id="child-name-input"
@@ -165,7 +166,6 @@ export function Breed() {
 
                     {displayChild(child, "")}
                 </div>
-            </div>
         </div>
     );
 }
