@@ -19,7 +19,7 @@ def validate(rat):
 
     # make sure name is alphabetic characters
     name = rat.get('name')
-    if not name or re.fullmatch('([a-z]|[A-Z])+', name) == None:
+    if not name or re.fullmatch('([a-z]|[A-Z]|\\ )+', name) == None:
         print(f'rejected {rat}: name is not alphanumeric')
         return False
 

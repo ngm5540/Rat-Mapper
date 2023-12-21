@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "preact/hooks";
 
-import { Rat, Sex, meiosis } from "../../rat";
+import { NAME_RE, Rat, Sex, meiosis } from "../../rat";
 import { getAllRats, postRat } from "../../backend";
 import "../../style.css";
 import { DNAVisualization, RatComponent } from "../../components/Rat";
@@ -149,10 +149,11 @@ export function Breed() {
                         class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
                         onClick={submitChild}
                         hidden={!child}
-                        disabled={!child || child.name == ""}
+                        disabled={child?.name == "" || !NAME_RE.test(child?.name)}
                     >
                         Send to shed
                     </button>
+                    <p hidden={child?.name == "" || NAME_RE.test(child?.name)}>Names can only contain alphanumeric characters and spaces!</p>
 
                     {displayChild(child, "")}
                 </div>

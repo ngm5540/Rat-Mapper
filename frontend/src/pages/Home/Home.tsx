@@ -5,7 +5,7 @@
  * @author Nathan Jankowski (njj3397 @ rit dot edu)
  **/
 import { useState } from "preact/hooks";
-import { MI, Rat, Sex } from "../../rat";
+import { MI, Rat, Sex, NAME_RE } from "../../rat";
 import "./style.css";
 import { postRat } from "../../backend";
 import { DNAVisualization } from "../../components/Rat";
@@ -311,7 +311,7 @@ export default function Home() {
                 ></input>
                 <button
                     class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
-                    disabled={!rat.name}
+                    disabled={!rat.name || !NAME_RE.test(rat.name)}
                     onClick={() => {
                         postRat(rat).then((value: Response) => {
                             console.log(`Got response! ${value.status}`);
@@ -321,6 +321,7 @@ export default function Home() {
                 >
                     Send to shed
                 </button>
+                <p hidden={rat.name == "" || NAME_RE.test(rat.name)}>Names can only contain alphanumeric characters and spaces!</p>
             </div>
         </div>
     );
