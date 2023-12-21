@@ -115,6 +115,12 @@ export default function Tree() {
                     );
                 })}
             </ul>
+            <a
+                class="text-red-500 underline"
+                href="mailto:numeric_ladybug786@simplelogin.com"
+            >
+                Report a rat
+            </a>
         </div>
     );
 }

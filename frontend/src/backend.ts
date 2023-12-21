@@ -6,7 +6,8 @@
 
 import { Rat } from "./rat";
 
-const BACKEND_URL = "http://127.0.0.1:5000";
+// TODO is there a better way of storing this
+const BACKEND_URL = "https://ratmapper.student.rit.edu:5000";
 const HEADERS = {
     "Content-Type": "application/json",
 };

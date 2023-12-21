@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from "preact/hooks";
 
-import { Rat, Sex, meiosis } from "../../rat";
+import { NAME_RE, Rat, Sex, meiosis } from "../../rat";
 import { getAllRats, postRat } from "../../backend";
 import "../../style.css";
 import { DNAVisualization, RatComponent } from "../../components/Rat";
@@ -98,8 +98,8 @@ export function Breed() {
     return (
         <div class="major_component ">
             <h1 class="font-bold text-2xl">Breed</h1>
-            <div class="grid grid-rows-2 grid-cols-auto md:grid-cols-2 grid-flow-row gap-x-4">
-                <div class="">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-8 md:gap-14 mb-4">
+                <div>
                     <h2 class="text-xl">Male</h2>
                     <select
                         id="father-select"
@@ -129,7 +129,8 @@ export function Breed() {
                     </select>
                     <p>{displayParent(mother, "...")} </p>
                 </div>
-                <div class="col-span-2">
+            </div>
+                <div class="flex-row">
                     <h2 class="text-xl">Child </h2>
                     <input
                         id="child-name-input"
@@ -149,14 +150,22 @@ export function Breed() {
                         class="bg-indigo-500 disabled:bg-gray-500 hover:bg-indigo-700 text-white rounded-md ml-auto w-32 h-8"
                         onClick={submitChild}
                         hidden={!child}
-                        disabled={!child || child.name == ""}
+                        disabled={
+                            child?.name == "" || !NAME_RE.test(child?.name)
+                        }
                     >
                         Send to shed
                     </button>
+                    <p
+                        class="text-red-500"
+                        hidden={child?.name == "" || NAME_RE.test(child?.name)}
+                    >
+                        Names can only contain alphanumeric characters and
+                        spaces!
+                    </p>
 
                     {displayChild(child, "")}
                 </div>
-            </div>
         </div>
     );
 }

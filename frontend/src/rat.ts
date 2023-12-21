@@ -17,6 +17,8 @@ import {
     encodeDNA,
 } from "./proteins";
 
+export const NAME_RE = new RegExp("^([a-z]|[A-Z]|\ )+$");
+
 /**
  * sex of rats
  **/
