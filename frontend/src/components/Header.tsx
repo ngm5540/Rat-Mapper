@@ -16,7 +16,7 @@ export function Header() {
                     />
                     <a class="md:text-lg">Rat Mapper</a>
                 </div>
-                <div class="overflow-auto ml-auto flex flex-row items-center space-x-4 w-1/3 justify-evenly">
+                <div class="overflow-auto ml-auto flex flex-row items-center space-x-4 md:w-1/3 justify-evenly">
                     <a class="hover:text-indigo-200" href="/">
                         Home
                     </a>
