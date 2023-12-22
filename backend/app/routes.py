@@ -24,7 +24,11 @@ def validate(rat):
         print('name is not alphanumeric')
         return False
 
-    return 1 not in predict_profanity([name, name.replace(' ', '')])
+    if 1 in predict_profanity([name, name.replace(' ', '')]):
+        print(f'{name} failed profanity check!')
+        return False
+
+    return True
 
 @app.route('/get/<rat_id>')
 def get_rat(rat_id:int):
@@ -51,7 +55,7 @@ def save_rat():
         print('rejecting - invalid body!')
         return BAD_REQUEST
 
-    if validate(json):
+    if not validate(json):
         # the request is technically valid but we're ignoring it
         print('rejecting - failed data validation!')
         return OK
