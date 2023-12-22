@@ -11,17 +11,20 @@ from app.models.brokers import RatHook
 DISABLE_SAVING = False
 
 def validate(rat):
+    print(f'validating {rat}')
     # make sure the hair is valid
     fc = rat.get('fur_color')
     if not fc or re.fullmatch('(B|W|r){2}', fc) == None:
+        print('invalid fur_color')
         return False
 
     # make sure name is alphabetic characters
     name = rat.get('name')
     if not name or re.fullmatch('([a-z]|[A-Z]|\\ )+', name) == None:
+        print('name is not alphanumeric')
         return False
 
-    return 1 in predict_profanity([name, name.replace(' ', '')])
+    return 1 not in predict_profanity([name, name.replace(' ', '')])
 
 @app.route('/get/<rat_id>')
 def get_rat(rat_id:int):
@@ -41,17 +44,21 @@ def save_rat():
 
     json = request.get_json()
     if not json:
+        print('rejecting - no body!')
         return jsonify({'message' : 'Json Required!!'}), 400
 
     if type(json) is not dict:
+        print('rejecting - invalid body!')
         return BAD_REQUEST
 
-    if not validate(json):
+    if validate(json):
         # the request is technically valid but we're ignoring it
+        print('rejecting - failed data validation!')
         return OK
 
     # ignore specified id; should be managed by the server
     if 'id' in json.keys():
         json.pop('id')
     RatHook.insert(**json)
+    print('accepted submission')
     return OK
